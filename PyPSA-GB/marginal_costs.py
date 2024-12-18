@@ -80,12 +80,17 @@ def carbon_support_price_df(df):
     dti = pd.date_range(
         start="2010-01-01 00:00:00", end="2020-12-31 23:30:00", freq="0.5H"
     )
-    csp_df = pd.DataFrame(columns=["Carbon support price (Pounds/tonne)"], index=dti)
+    csp_df = pd.DataFrame(
+        columns=["Carbon support price (Pounds/tonne)"], index=dti)
     csp_df.loc["2010-01-01":"2013-03-31 23:30"] = 0.0
-    csp_df.loc["2013-04-01":"2014-04-01"] = csp.loc[0, "Carbon Support Price (£/tonne)"]
-    csp_df.loc["2014-04-01":"2015-04-01"] = csp.loc[1, "Carbon Support Price (£/tonne)"]
-    csp_df.loc["2015-04-01":"2016-04-01"] = csp.loc[2, "Carbon Support Price (£/tonne)"]
-    csp_df.loc["2016-04-01":"2020-12-31"] = csp.loc[3, "Carbon Support Price (£/tonne)"]
+    csp_df.loc["2013-04-01":"2014-04-01"] = csp.loc[0,
+                                                    "Carbon Support Price (£/tonne)"]
+    csp_df.loc["2014-04-01":"2015-04-01"] = csp.loc[1,
+                                                    "Carbon Support Price (£/tonne)"]
+    csp_df.loc["2015-04-01":"2016-04-01"] = csp.loc[2,
+                                                    "Carbon Support Price (£/tonne)"]
+    csp_df.loc["2016-04-01":"2020-12-31"] = csp.loc[3,
+                                                    "Carbon Support Price (£/tonne)"]
 
     return csp_df
 
@@ -102,7 +107,8 @@ def EU_ETS_df(df):
     # downsample to half hourly
     ets = ets.resample("0.5H").ffill()
     # rename the column name
-    ets.rename(columns={"Price (Euros/tonne)": "EU ETS (Euros/tonne)"}, inplace=True)
+    ets.rename(
+        columns={"Price (Euros/tonne)": "EU ETS (Euros/tonne)"}, inplace=True)
     # need to add last day of values
     dti_end = pd.date_range(
         start="2020-12-31 00:30:00", end="2020-12-31 23:30:00", freq="0.5H"
@@ -187,7 +193,8 @@ def marginal_price_dataframe(FES):
     # exchange euros for pounds
     exch = exchange_year_average()
     for year in range(2010, 2021):
-        result.loc[:, "EU ETS (Euros/tonne)"].loc[str(year) : str(year)] *= exch[year]
+        result.loc[:, "EU ETS (Euros/tonne)"].loc[str(year)
+                               : str(year)] *= exch[year]
     result.rename(
         columns={"EU ETS (Euros/tonne)": "EU ETS (Pounds/tonne)"}, inplace=True
     )
@@ -268,7 +275,8 @@ def marginal_price_dataframe(FES):
     future_fuel_price = future_fuel_prices_df(FES)
     future_fuel_price = future_fuel_price.apply(pd.to_numeric, errors="coerce")
     future_carbon_price = future_carbon_prices_df(FES)
-    future_carbon_price = future_carbon_price.apply(pd.to_numeric, errors="coerce")
+    future_carbon_price = future_carbon_price.apply(
+        pd.to_numeric, errors="coerce")
 
     future_result = pd.concat([future_fuel_price, future_carbon_price], axis=1)
 

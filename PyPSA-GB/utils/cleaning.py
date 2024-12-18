@@ -106,7 +106,7 @@ def fix_snapshots(data_snapshots, snapshots_path="LOPF_data/snapshots.csv"):
     """
     # use the snapshots index
     snapshots = pd.read_csv(snapshots_path, index_col=0, parse_dates=True)
-    snapshots.loc[data_snapshots[0] : data_snapshots[-1]].to_csv(snapshots_path)
+    snapshots.loc[data_snapshots[0]: data_snapshots[-1]].to_csv(snapshots_path)
 
 
 def unify_snapshots(target, filenames, dir):
@@ -131,7 +131,8 @@ def unify_snapshots(target, filenames, dir):
 
     """
 
-    target = pd.read_csv(os.path.join(dir, target), index_col=0, parse_dates=True).index
+    target = pd.read_csv(os.path.join(dir, target),
+                         index_col=0, parse_dates=True).index
     target_length = len(target)
 
     for file in filenames:
@@ -139,19 +140,21 @@ def unify_snapshots(target, filenames, dir):
         df = pd.read_csv(file, index_col=0, parse_dates=True)
 
         if len(df) > target_length:
-            df.loc[target[0] : target[-1]].to_csv(file)
+            df.loc[target[0]: target[-1]].to_csv(file)
 
 
 if __name__ == "__main__":
 
-    dummy_sn = pd.date_range("2020-01-01 00:00:00", "2020-01-01 03:00:00", freq="0.5H")
+    dummy_sn = pd.date_range("2020-01-01 00:00:00",
+                             "2020-01-01 03:00:00", freq="0.5H")
     path = "utils/dump/snapshots.csv"
     pd.DataFrame(index=dummy_sn).to_csv(path)
 
     print("at start")
     print(pd.read_csv(path, index_col=0, parse_dates=True).index)
 
-    sn = pd.date_range("2020-01-01 00:00:00", "2020-01-01 02:30:00", freq="0.5H")
+    sn = pd.date_range("2020-01-01 00:00:00",
+                       "2020-01-01 02:30:00", freq="0.5H")
 
     fix_snapshots(sn, snapshots_path=path)
 

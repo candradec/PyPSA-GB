@@ -46,7 +46,8 @@ def fix_PV():
 
     meta = pickle.load(open("data/renewables/2016/onshore_metadata.pkl", "rb"))
     print(len(meta))
-    meta2 = pickle.load(open("data/renewables/2016/onshore_metadata2.pkl", "rb"))
+    meta2 = pickle.load(
+        open("data/renewables/2016/onshore_metadata2.pkl", "rb"))
     print(len(meta2))
 
     meta.update(meta2)
@@ -145,14 +146,16 @@ def offshore_wind_time_series(df, year, date_from, date_to):
         )
         output_series.append(wind["data"])
         output_series_normalised.append(wind["normalised"])
-        output_series_metadata[df_offshore_wind["Site Name"][i]] = wind["metadata"]
+        output_series_metadata[df_offshore_wind["Site Name"]
+                               [i]] = wind["metadata"]
 
         # gathers all the time series into one dataframe
         df_out = pd.concat(output_series, axis=1)
         df_out_norm = pd.concat(output_series_normalised, axis=1)
 
         # want to save these into pickle files
-        df_out.to_pickle("data/renewables/" + str(year) + "/offshore_time_series.pkl")
+        df_out.to_pickle("data/renewables/" + str(year) +
+                         "/offshore_time_series.pkl")
         df_out_norm.to_pickle(
             "data/renewables/" + str(year) + "/offshore_time_series_norm.pkl"
         )
@@ -250,7 +253,8 @@ def onshore_wind_time_series(df, year, date_from, date_to):
         )
         output_series.append(wind["data"])
         output_series_normalised.append(wind["normalised"])
-        output_series_metadata[df_onshore_wind["Site Name"][i]] = wind["metadata"]
+        output_series_metadata[df_onshore_wind["Site Name"]
+                               [i]] = wind["metadata"]
 
         # save for each timestep due to loss of connection and other errors
 
@@ -259,7 +263,8 @@ def onshore_wind_time_series(df, year, date_from, date_to):
         df_out_norm = pd.concat(output_series_normalised, axis=1)
 
         # want to save these into pickle files
-        df_out.to_pickle("data/renewables/" + str(year) + "/onshore_time_series.pkl")
+        df_out.to_pickle("data/renewables/" + str(year) +
+                         "/onshore_time_series.pkl")
         df_out_norm.to_pickle(
             "data/renewables/" + str(year) + "/onshore_time_series_norm.pkl"
         )
@@ -319,7 +324,8 @@ def PV_time_series(df, year, date_from, date_to):
         lat = df_PV["lat"][i]
         lon = df_PV["lon"][i]
 
-        print(lat, lon, date_from, date_to, capacity, system_loss, tracking, tilt, azim)
+        print(lat, lon, date_from, date_to, capacity,
+              system_loss, tracking, tilt, azim)
 
         # request data from renewables ninja
         PV = renewables_ninja_API.request_PV(
@@ -335,7 +341,8 @@ def PV_time_series(df, year, date_from, date_to):
             azim,
         )
 
-        PV["data"] = PV["data"].rename(columns={"electricity": df_PV["Site Name"][i]})
+        PV["data"] = PV["data"].rename(
+            columns={"electricity": df_PV["Site Name"][i]})
         PV["normalised"] = PV["data"] / capacity
         output_series.append(PV["data"])
         output_series_normalised.append(PV["normalised"])
@@ -348,7 +355,8 @@ def PV_time_series(df, year, date_from, date_to):
         df_out_norm = pd.concat(output_series_normalised, axis=1)
 
         # want to save these into pickle files
-        df_out.to_pickle("data/renewables/" + str(year) + "/PV_time_series.pkl")
+        df_out.to_pickle("data/renewables/" +
+                         str(year) + "/PV_time_series.pkl")
         df_out_norm.to_pickle(
             "data/renewables/" + str(year) + "/PV_time_series_norm.pkl"
         )
@@ -438,7 +446,8 @@ def wind_onshore_corrected(year):
     """
 
     file = "data/renewables/" + str(year) + "/onshore_time_series.pkl"
-    df_onshore = renewables.fix_timeseries_res_for_year(file, year, "Wind Onshore")
+    df_onshore = renewables.fix_timeseries_res_for_year(
+        file, year, "Wind Onshore")
     # print(df_onshore)
     # print(df_onshore.columns)
     # total = df_onshore.to_numpy().sum() / 1000000000
@@ -464,7 +473,8 @@ def wind_onshore_corrected(year):
     # then need to adjust the normalised time series
     factor = gen_year / (df_onshore.to_numpy().sum() / 1000000000)
     file = "data/renewables/" + str(year) + "/onshore_time_series_norm.pkl"
-    df_onshore_norm = renewables.fix_timeseries_res_for_year(file, year, "Wind Onshore")
+    df_onshore_norm = renewables.fix_timeseries_res_for_year(
+        file, year, "Wind Onshore")
 
     # df2 = df_onshore * factor
     # total = df2.to_numpy().sum() / 1000000000
@@ -490,7 +500,8 @@ def wind_onshore_corrected_series(year):
          timeseries dataframe with corrected factor included
     """
     file = "data/renewables/" + str(year) + "/onshore_time_series.pkl"
-    df_onshore = renewables.fix_timeseries_res_for_year(file, year, "Wind Onshore")
+    df_onshore = renewables.fix_timeseries_res_for_year(
+        file, year, "Wind Onshore")
     # print(df_onshore)
     # print(df_onshore.columns)
     # total = df_onshore.to_numpy().sum() / 1000000000
@@ -543,7 +554,8 @@ def wind_offshore_corrected(year):
          timeseries dataframe with corrected factor included
     """
     file = "data/renewables/" + str(year) + "/offshore_time_series.pkl"
-    df_offshore = renewables.fix_timeseries_res_for_year(file, year, "Wind Offshore")
+    df_offshore = renewables.fix_timeseries_res_for_year(
+        file, year, "Wind Offshore")
     # print(df_offshore.to_numpy().sum() / 1000000000, 'TWh')
     # print(df_onshore)
     # print(df_onshore.columns)
@@ -600,7 +612,8 @@ def wind_offshore_corrected_series(year):
          timeseries dataframe with corrected factor included
     """
     file = "data/renewables/" + str(year) + "/offshore_time_series.pkl"
-    df_offshore = renewables.fix_timeseries_res_for_year(file, year, "Wind Offshore")
+    df_offshore = renewables.fix_timeseries_res_for_year(
+        file, year, "Wind Offshore")
     # print(df_offshore.to_numpy().sum() / 1000000000, 'TWh')
     # print(df_onshore)
     # print(df_onshore.columns)
@@ -655,7 +668,8 @@ def PV_corrected(year):
          timeseries dataframe with corrected factor included
     """
     file = "data/renewables/" + str(year) + "/PV_time_series.pkl"
-    df_PV = renewables.fix_timeseries_res_for_year(file, year, "Solar Photovoltaics")
+    df_PV = renewables.fix_timeseries_res_for_year(
+        file, year, "Solar Photovoltaics")
     # print(df_PV.to_numpy().sum() / 1000000000, 'TWh')
     # print(df_PV)
     # print(df_PV.columns)
@@ -711,7 +725,8 @@ def PV_corrected_series(year):
     """
 
     file = "data/renewables/" + str(year) + "/PV_time_series.pkl"
-    df_PV = renewables.fix_timeseries_res_for_year(file, year, "Solar Photovoltaics")
+    df_PV = renewables.fix_timeseries_res_for_year(
+        file, year, "Solar Photovoltaics")
     # print(df_PV.to_numpy().sum() / 1000000000, 'TWh')
     # print(df_PV)
     # print(df_PV.columns)

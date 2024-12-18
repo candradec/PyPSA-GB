@@ -79,7 +79,8 @@ def write_interconnectors(start, end, freq):
     df_load.to_csv("UC_data/loads.csv", index=False, header=True)
 
     # then add the interconnectors as named generators with basic attributes
-    df_gen = pd.read_csv("UC_data/generators.csv", index_col=0, parse_dates=True)
+    df_gen = pd.read_csv("UC_data/generators.csv",
+                         index_col=0, parse_dates=True)
     # use hydro row as a template
     IC_gen = df_gen.iloc[[0]]
     result = df_gen
@@ -109,7 +110,8 @@ def write_interconnectors(start, end, freq):
     df_gen2 = pd.read_csv("LOPF_data/generators.csv", index_col=0)
     # use row zero as a template
     IC_gen2 = df_gen2.iloc[[0]]
-    df_gen2 = pd.read_csv("LOPF_data/generators.csv", index_col=0, parse_dates=True)
+    df_gen2 = pd.read_csv("LOPF_data/generators.csv",
+                          index_col=0, parse_dates=True)
     result2 = df_gen2
     for i in name_dic["name"]:
         IC_gen2.index = [i]
@@ -211,7 +213,8 @@ def future_interconnectors(year, scenario, FES):
     # what interconnectors in future
     # read in future interconnector csv data
     # https://www.ofgem.gov.uk/energy-policy-and-regulation/policy-and-regulatory-programmes/interconnectors
-    df_IC_future = pd.read_csv("../data/interconnectors/links_future.csv", index_col=0)
+    df_IC_future = pd.read_csv(
+        "../data/interconnectors/links_future.csv", index_col=0)
     df_IC_future["p_min_pu"] = -1
     # filter by date
     df = df_IC_future.reset_index().set_index(["installed date"])
@@ -240,7 +243,8 @@ def future_interconnectors(year, scenario, FES):
                 index_col=1,
             )
         df_FES.dropna(axis="rows", inplace=True)
-        df_FES = df_FES[df_FES.Type.str.contains("Interconnectors", case=False)]
+        df_FES = df_FES[df_FES.Type.str.contains(
+            "Interconnectors", case=False)]
         df_FES = df_FES[~df_FES.Variable.str.contains("(TWh)")]
         cols = [0, 1, 2, 3, 4]
         df_FES.drop(df_FES.columns[cols], axis=1, inplace=True)

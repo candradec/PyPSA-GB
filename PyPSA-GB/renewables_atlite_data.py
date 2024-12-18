@@ -117,7 +117,8 @@ def offshore_wind_pipeline(year):
     df2.drop(columns=["X-coordinate", "Y-coordinate"], inplace=True)
     print(df2)
     df2.to_csv(
-        "../data/renewables/atlite/inputs/offshore_pipeline_" + str(year) + ".csv",
+        "../data/renewables/atlite/inputs/offshore_pipeline_" +
+        str(year) + ".csv",
         header=True,
         index=True,
     )
@@ -141,7 +142,8 @@ def offshore_wind_scotland_planned():
     df_plan.loc[:, "Installed Capacity (MWelec)"] *= 1000
     df_plan["Turbine Capacity (MW)"] = 12.0
     df_plan["No. of Turbines"] = (
-        df_plan["Installed Capacity (MWelec)"] / df_plan["Turbine Capacity (MW)"]
+        df_plan["Installed Capacity (MWelec)"] /
+        df_plan["Turbine Capacity (MW)"]
     )
     df_plan["No. of Turbines"] = df_plan["No. of Turbines"].astype(int)
     df_plan.index.name = "Site Name"

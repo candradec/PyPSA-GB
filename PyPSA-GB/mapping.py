@@ -151,7 +151,8 @@ def gif_maker(tech):
     file9 = "../data/renewables/" + "/2019" + "_" + tech + ".png"
     file10 = "../data/renewables/" + "/2020" + "_" + tech + ".png"
 
-    filenames = [file1, file2, file3, file4, file5, file6, file7, file8, file9, file10]
+    filenames = [file1, file2, file3, file4,
+                 file5, file6, file7, file8, file9, file10]
 
     with imageio.get_writer(
         "../data/renewables/" + tech + ".gif", mode="I", duration=1.0

@@ -34,7 +34,8 @@ def get_rate(
     for i in range(len(carrier)):
         # if row[i] != [0]: only running stations
         name = name_list[i]
-        fuel_type = convert_type(name, carrier, conversion_dict, power_stations)
+        fuel_type = convert_type(
+            name, carrier, conversion_dict, power_stations)
         if fuel_type != "Battery":
             rate = breakdown_rate[fuel_type]
         else:
@@ -71,13 +72,16 @@ def convert_type(name, carrier, conversion_dict, power_stations):
 def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=None):
     if year > 2020:
         year = year_baseline
-    file = "../data/power stations/power_stations_locations_" + str(year) + ".csv"
+    file = "../data/power stations/power_stations_locations_" + \
+        str(year) + ".csv"
     power_stations = pd.read_csv(file, encoding="unicode_escape")
 
-    bd_conversion_csv = pd.read_csv("../data/LOLE/bd_conversion_type.csv", index_col=0)
+    bd_conversion_csv = pd.read_csv(
+        "../data/LOLE/bd_conversion_type.csv", index_col=0)
     bd_conversion_dict = bd_conversion_csv.to_dict()["1"]
 
-    breakdown_rate = pd.read_csv("../data/LOLE/breakdown_rate.csv", index_col=0)
+    breakdown_rate = pd.read_csv(
+        "../data/LOLE/breakdown_rate.csv", index_col=0)
     breakdowwn_rate_battery = pd.read_csv(
         "../data/LOLE/breakdowwn_rate_battery.csv", index_col=0
     )
@@ -93,7 +97,8 @@ def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=No
             generator_type = failures_type[_]
             if generator_type != "Battery":
                 breakdown_rate.loc[generator_type] = (
-                    1 - (1 - breakdown_rate.loc[generator_type]) * failures_rate[_]
+                    1 -
+                    (1 - breakdown_rate.loc[generator_type]) * failures_rate[_]
                 )
             else:
                 breakdowwn_rate_battery["Breakdown Rate"] = (
@@ -102,7 +107,8 @@ def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=No
                 )
 
     breakdown_rate = breakdown_rate.to_dict()["Breakdown Rate"]
-    breakdowwn_rate_battery = breakdowwn_rate_battery.to_dict()["Breakdown Rate"]
+    breakdowwn_rate_battery = breakdowwn_rate_battery.to_dict()[
+        "Breakdown Rate"]
 
     generators_name_list = network.generators.index.tolist()
 
@@ -172,7 +178,8 @@ def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=No
     # Shoreline Wave, Tidal Barrage and Tidal Stream
 
     pd_stations = (
-        pd_stations[(pd_rate < 1) & (pd_rate > 0)].dropna(axis=1, how="all").fillna(0)
+        pd_stations[(pd_rate < 1) & (pd_rate > 0)].dropna(
+            axis=1, how="all").fillna(0)
     )
 
     # Note: now, the time series of breakdown rate ONLY include non weather dependent units (i.e. convertional units)
@@ -200,10 +207,12 @@ def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=No
 def Margin(network, pd_stations, year, system_reserve_requirment, year_baseline=None):
     if year > 2020:
         year = year_baseline
-    file = "../data/power stations/power_stations_locations_" + str(year) + ".csv"
+    file = "../data/power stations/power_stations_locations_" + \
+        str(year) + ".csv"
     power_stations = pd.read_csv(file, encoding="unicode_escape")
 
-    de_conversion_csv = pd.read_csv("../data/LOLE/de_conversion_type.csv", index_col=0)
+    de_conversion_csv = pd.read_csv(
+        "../data/LOLE/de_conversion_type.csv", index_col=0)
     de_conversion_dict = de_conversion_csv.to_dict()["1"]
 
     de_rate = pd.read_csv("../data/LOLE/de_rate.csv", index_col=0)
@@ -275,8 +284,10 @@ def split_generators(
         num = installed_capacity.shape[0]
     sorted_capacity = np.sort(installed_capacity[installed_capacity >= value])
     boundary = sorted_capacity[max(sorted_capacity.shape[0] - num, 0)]
-    large_capacity = np.copy(installed_capacity[installed_capacity >= boundary])
-    large_breakdwon_rate = np.copy(breakdwon_rate[installed_capacity >= boundary])
+    large_capacity = np.copy(
+        installed_capacity[installed_capacity >= boundary])
+    large_breakdwon_rate = np.copy(
+        breakdwon_rate[installed_capacity >= boundary])
     expect_small_capacity = sum(
         installed_capacity[installed_capacity < boundary]
         * (1 - breakdwon_rate[installed_capacity < boundary])
@@ -542,15 +553,18 @@ def rate_table(nuclear=True):
     if nuclear == False:
         de_rate["Nuclear"] = 0
 
-    de_csv = pd.DataFrame.from_dict(de_rate, orient="index", columns=["De-Rate"])
+    de_csv = pd.DataFrame.from_dict(
+        de_rate, orient="index", columns=["De-Rate"])
     de_csv = de_csv.reset_index().rename(columns={"index": "Type"})
 
     if not os.path.exists("../data/LOLE"):
         os.makedirs("../data/LOLE")
-    bd_conversion_type_csv.to_csv("../data/LOLE/bd_conversion_type.csv", index=False)
+    bd_conversion_type_csv.to_csv(
+        "../data/LOLE/bd_conversion_type.csv", index=False)
     br_csv.to_csv("../data/LOLE/breakdown_rate.csv", index=False)
     brb_csv.to_csv("../data/LOLE/breakdowwn_rate_battery.csv", index=False)
-    de_conversion_type_csv.to_csv("../data/LOLE/de_conversion_type.csv", index=False)
+    de_conversion_type_csv.to_csv(
+        "../data/LOLE/de_conversion_type.csv", index=False)
     de_csv.to_csv("../data/LOLE/de_rate.csv", index=False)
 
 
@@ -588,7 +602,8 @@ def loads_leap_year():
     pd_load.index = pd.to_datetime(pd_load.index)
 
     pd_load_1 = pd_load[pd_load.index.month <= 2]
-    pd_load_2 = pd_load[((pd_load.index.month == 2) & (pd_load.index.day == 28))]
+    pd_load_2 = pd_load[((pd_load.index.month == 2) &
+                         (pd_load.index.day == 28))]
     pd_load_2.index = [_.replace(day=29) for _ in pd_load_2.index.to_list()]
     pd_load_3 = pd_load[pd_load.index.month > 2]
     pd_load_new = pd.concat([pd_load_1, pd_load_2, pd_load_3])
@@ -711,7 +726,8 @@ def main(
     output_margin = pd.DataFrame(index=network.snapshots)
     output_lolp = pd.DataFrame(columns=["peak_lolp", "lole", "lole_week"])
     output_lolp_self = pd.DataFrame(columns=["peak_lolp", "lole", "lole_week"])
-    lole_loop = pd.DataFrame(columns=[i * step for i in range(round(10000 / step))])
+    lole_loop = pd.DataFrame(
+        columns=[i * step for i in range(round(10000 / step))])
 
     installed_capacity, breakdwon_rate, net_demand, pd_stations_all, pd_stations_w = (
         LOLP(network, year, year_baseline=year_baseline)
@@ -743,10 +759,12 @@ def main(
     print(pd.Series(net_demand).describe())
 
     if os.path.exists("../data/LOLE/peak_demand.csv"):
-        pd_peak_demand = pd.read_csv("../data/LOLE/peak_demand.csv", index_col=0)
+        pd_peak_demand = pd.read_csv(
+            "../data/LOLE/peak_demand.csv", index_col=0)
     else:
         pd_peak_demand = pd.DataFrame(columns=["demand"])
-    pd_peak_demand.loc[year] = {"demand": network.loads_t.p_set.sum(axis=1).max()}
+    pd_peak_demand.loc[year] = {
+        "demand": network.loads_t.p_set.sum(axis=1).max()}
     pd_peak_demand.to_csv("../data/LOLE/peak_demand.csv")
 
     generators_p_nom_scotland = (
@@ -756,9 +774,11 @@ def main(
         .sort_values()
     )
     if year > 2020:
-        generators_p_nom_scotland.drop(["Unmet Load", "CCS Biomass"], inplace=True)
+        generators_p_nom_scotland.drop(
+            ["Unmet Load", "CCS Biomass"], inplace=True)
     generators_p_nom_scotland.drop(
-        generators_p_nom_scotland[generators_p_nom_scotland < 50].index, inplace=True
+        generators_p_nom_scotland[generators_p_nom_scotland <
+                                  50].index, inplace=True
     )
     print(generators_p_nom_scotland)
     generators_p_nom_scotland.to_csv(
@@ -770,7 +790,8 @@ def main(
     )
 
     plt.figure(figsize=(10, 4))
-    plt.bar(generators_p_nom_scotland.index, generators_p_nom_scotland.values / 1000)
+    plt.bar(generators_p_nom_scotland.index,
+            generators_p_nom_scotland.values / 1000)
     plt.xticks(generators_p_nom_scotland.index, rotation=90)
     plt.ylabel("GW")
     plt.grid(color="grey", linewidth=1, axis="both", alpha=0.5)
@@ -786,12 +807,14 @@ def main(
     )
     plt.show()
 
-    pd_de_rated_capacity = pd.concat([network.generators, network.storage_units])
+    pd_de_rated_capacity = pd.concat(
+        [network.generators, network.storage_units])
     pd_de_rated_capacity["de_rated_capacit"] = de_rated_capacity.loc[
         de_rated_capacity.index[0]
     ].tolist()
     pd_de_rated_capacity = (
-        pd_de_rated_capacity.de_rated_capacit.groupby(pd_de_rated_capacity.carrier)
+        pd_de_rated_capacity.de_rated_capacit.groupby(
+            pd_de_rated_capacity.carrier)
         .sum()
         .sort_values()
     )
@@ -829,13 +852,15 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     pd_cdf = pd.DataFrame()
     pd_cdf["xx"] = xx
     pd_cdf["yy"] = cdf
     pd_cdf.to_csv(
-        "../data/LOLE/cdf_" + str(year) + "_" + re.sub("[^A-Z]", "", scenario) + ".csv"
+        "../data/LOLE/cdf_" + str(year) + "_" +
+        re.sub("[^A-Z]", "", scenario) + ".csv"
     )
 
     # plt.plot(xx,yy)
@@ -855,7 +880,8 @@ def main(
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
@@ -869,7 +895,8 @@ def main(
         pd_stations_w.sum(axis=1), columns=["weather dependent capacity"]
     )
     pd_peakload_period = pd_peakload_period[
-        ((pd_peakload_period.index.month < 4) | (pd_peakload_period.index.month > 10))
+        ((pd_peakload_period.index.month < 4) |
+         (pd_peakload_period.index.month > 10))
         & (pd_peakload_period.index.weekday < 6)
         & (pd_peakload_period.index.hour > 6)
         & (pd_peakload_period.index.hour < 20)
@@ -913,7 +940,8 @@ def main(
         lole = sum(lolp)
         lole_list.append(lole)
         print(f"for {i_*step}MW increased firm capacity, lole is {lole}")
-    lole_loop.loc["Base case"] = dict([[i * step, lole_list[i]] for i in range(i_ + 1)])
+    lole_loop.loc["Base case"] = dict(
+        [[i * step, lole_list[i]] for i in range(i_ + 1)])
 
     # ### 2.1 Largest offshore wind farm failure
     largest_windfarm = (
@@ -944,8 +972,8 @@ def main(
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -991,19 +1019,21 @@ def main(
     )
 
     # ### 2.2 Long period of low RES power scenario
-    net_demand = network.loads_t.p_set.sum(axis=1) - pd_stations_w.sum(axis=1) * 0.8
+    net_demand = network.loads_t.p_set.sum(
+        axis=1) - pd_stations_w.sum(axis=1) * 0.8
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1060,20 +1090,22 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1130,21 +1162,23 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
 
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1201,20 +1235,22 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1271,20 +1307,22 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1341,20 +1379,22 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
     lolp_base = lolp
 
@@ -1440,8 +1480,8 @@ def main(
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1487,19 +1527,21 @@ def main(
     )
 
     # ### 2.2 Long period of low RES power scenario
-    net_demand = network.loads_t.p_set.sum(axis=1) - pd_stations_w.sum(axis=1) * 0.8
+    net_demand = network.loads_t.p_set.sum(
+        axis=1) - pd_stations_w.sum(axis=1) * 0.8
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1549,27 +1591,30 @@ def main(
             network,
             year,
             year_baseline=year_baseline,
-            failures_type=["CCGT", "OCGT", "Interconnector", "Englandconnector"],
+            failures_type=["CCGT", "OCGT",
+                           "Interconnector", "Englandconnector"],
             failures_rate=0.0,
         )
     )
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1626,21 +1671,23 @@ def main(
     large_capacity, large_breakdwon_rate, expect_small_capacity = split_generators(
         installed_capacity, breakdwon_rate, value=0, Round=True
     )
-    xx, yy, pdf, cdf = probability_function(large_capacity, large_breakdwon_rate)
+    xx, yy, pdf, cdf = probability_function(
+        large_capacity, large_breakdwon_rate)
 
     lolp = list()
     for i in range(len(net_demand)):
         lolp.append(
             yy[
-                xx < net_demand[i] - expect_small_capacity + system_reserve_requirment
+                xx < net_demand[i] - expect_small_capacity +
+                system_reserve_requirment
             ].sum()
         )
 
     lole = sum(lolp)
     lole_week = sum(
         lolp_base[: index_peak_demand - 85]
-        + lolp[index_peak_demand - 85 : index_peak_demand + 84]
-        + lolp_base[index_peak_demand + 84 :]
+        + lolp[index_peak_demand - 85: index_peak_demand + 84]
+        + lolp_base[index_peak_demand + 84:]
     )
 
     lolp_p = 0
@@ -1731,7 +1778,8 @@ def main_plot(scenario, year_list):
             + ".csv",
             index_col=0,
         )
-        pd_lolp.index = pd.MultiIndex.from_arrays([[year] * 8, pd_lolp.index.tolist()])
+        pd_lolp.index = pd.MultiIndex.from_arrays(
+            [[year] * 8, pd_lolp.index.tolist()])
         pd_plot = pd.concat([pd_plot, pd_lolp])
 
         pd_lolp_self = pd.read_csv(
@@ -1781,13 +1829,15 @@ def main_plot(scenario, year_list):
         for col in sub_pd.columns.tolist():
             plt.figure(figsize=(10, 4))
             if col == "lole":
-                plt.plot([min(year_list) - 5, max(year_list) + 5], [3, 3], "r--")
+                plt.plot([min(year_list) - 5, max(year_list) + 5],
+                         [3, 3], "r--")
 
                 # plt.plot([min(year_list)-5,max(year_list)+5], [0.2,0.2], 'k:')
                 # plt.plot([min(year_list)-5,max(year_list)+5], [0.3,0.3], 'k:')
                 # plt.text(year_list[0]-4, 0.25 , 'The LOLE reported in National Grid’s Winter Outlook in 2021\nand 2022 were 0.3 and 0.2 hrs/year.' , fontsize = 14 , color = 'k' , ha = 'left' )
             plt.plot(sub_pd.index, sub_pd[col], color="dodgerblue")
-            plt.scatter(sub_pd.index, sub_pd[col], color="darkorange", marker="o")
+            plt.scatter(sub_pd.index, sub_pd[col],
+                        color="darkorange", marker="o")
             # plt.title(case+' - '+col)
             plt.ylabel("Hours")
             plt.grid(True)
@@ -1848,7 +1898,8 @@ def main_plot(scenario, year_list):
             if case == "Largest offshore failure":
                 case = "Offshore wind farm failures"
             plt.plot(sub_pd.index, sub_pd[col], marker="o", label=case)
-        plt.plot([min(year_list) - 5, max(year_list) + 5], [3, 3], "r--", linewidth=1)
+        plt.plot([min(year_list) - 5, max(year_list) + 5],
+                 [3, 3], "r--", linewidth=1)
         plt.plot(
             [min(year_list) - 5, max(year_list) + 5], [0.108, 0.108], "b--", linewidth=1
         )
@@ -1977,7 +2028,8 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
     for _ in range(len(year_list)):
         if np.isnan(
             pd_plot[
-                "Base case with additional " + str(index_1) + "MW firm capacity"
+                "Base case with additional " +
+                str(index_1) + "MW firm capacity"
             ].values[_]
         ):
             year = year_list[_]
@@ -2005,14 +2057,17 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
                 )
             lole = sum(lolp)
             pd_plot.loc[
-                year, "Base case with additional " + str(index_1) + "MW firm capacity"
+                year, "Base case with additional " +
+                str(index_1) + "MW firm capacity"
             ] = lole
             pd_plot.loc[
-                year, "Base case with additional " + str(index_2) + "MW firm capacity"
+                year, "Base case with additional " +
+                str(index_2) + "MW firm capacity"
             ] = lole
         if np.isnan(
             pd_plot[
-                "Base case with additional " + str(index_2) + "MW firm capacity"
+                "Base case with additional " +
+                str(index_2) + "MW firm capacity"
             ].values[_]
         ):
             year = year_list[_]
@@ -2040,7 +2095,8 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
                 )
             lole = sum(lolp)
             pd_plot.loc[
-                year, "Base case with additional " + str(index_2) + "MW firm capacity"
+                year, "Base case with additional " +
+                str(index_2) + "MW firm capacity"
             ] = lole
 
     plt.figure(figsize=(10, 4))

@@ -20,7 +20,8 @@ def load_zone(json_file):
         except:
             polygon_list = list()
             for j in range(len(json_file[i]["geometry"]["coordinates"])):
-                polygon = Polygon(json_file[i]["geometry"]["coordinates"][j][0])
+                polygon = Polygon(
+                    json_file[i]["geometry"]["coordinates"][j][0])
                 polygon_list.append(polygon)
             zone = MultiPolygon(polygon_list)
         zones_list.append(zone)
@@ -72,7 +73,8 @@ def map_to_zone(df, subzone=None, warm=False):
                 )
             min_poly = min(zones_list, key=data_point.distance)
             index_min_poly = zones_list.index(min_poly)
-            object_to_zone.append(json_file[index_min_poly]["properties"]["Name_1"])
+            object_to_zone.append(
+                json_file[index_min_poly]["properties"]["Name_1"])
 
         elif n != 1:
             if warm:

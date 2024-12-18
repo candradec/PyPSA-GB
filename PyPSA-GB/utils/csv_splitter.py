@@ -13,5 +13,5 @@ for year in range(2010, 2020 + 1):
                 + str(filename)
                 + ".csv",
                 "w+",
-            ).writelines(csvfile[i : i + chunks])
+            ).writelines(csvfile[i: i + chunks])
             filename += 1

@@ -111,5 +111,6 @@ if __name__ == "__main__":
     )
     print(PV["data"])
 
-    wind = request_wind(token, lat, lon, date_from, date_to, capacity, height, turbine)
+    wind = request_wind(token, lat, lon, date_from,
+                        date_to, capacity, height, turbine)
     print(wind["data"])

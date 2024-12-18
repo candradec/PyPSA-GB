@@ -55,16 +55,19 @@ def future_storage(FES):
 
     df_battery.loc[:, "type"] = "Battery"
 
-    df_compressed_air = df_FES[df_FES.Detail.str.contains("Compressed Air", case=False)]
+    df_compressed_air = df_FES[df_FES.Detail.str.contains(
+        "Compressed Air", case=False)]
     cols = [0, 1, 3, 5, 6]
-    df_compressed_air.drop(df_compressed_air.columns[cols], axis=1, inplace=True)
+    df_compressed_air.drop(
+        df_compressed_air.columns[cols], axis=1, inplace=True)
     df_compressed_air.dropna(axis="rows", inplace=True)
     df_compressed_air.set_index("Scenario", drop=True, inplace=True)
     df_compressed_air.iloc[:4, 0] = "p_nom"
     df_compressed_air.iloc[4:, 0] = "energy capacity"
     df_compressed_air.loc[:, "type"] = "Compressed Air"
 
-    df_liquid_air = df_FES[df_FES.Detail.str.contains("Liquid Air", case=False)]
+    df_liquid_air = df_FES[df_FES.Detail.str.contains(
+        "Liquid Air", case=False)]
     cols = [0, 1, 3, 5, 6]
     df_liquid_air.drop(df_liquid_air.columns[cols], axis=1, inplace=True)
     df_liquid_air.dropna(axis="rows", inplace=True)
@@ -73,7 +76,8 @@ def future_storage(FES):
     df_liquid_air.iloc[4:, 0] = "energy capacity"
     df_liquid_air.loc[:, "type"] = "Liquid Air"
 
-    df_pumped_hydro = df_FES[df_FES.Detail.str.contains("Pumped Hydro", case=False)]
+    df_pumped_hydro = df_FES[df_FES.Detail.str.contains(
+        "Pumped Hydro", case=False)]
     cols = [0, 1, 3, 5, 6]
     df_pumped_hydro.drop(df_pumped_hydro.columns[cols], axis=1, inplace=True)
     df_pumped_hydro.dropna(axis="rows", inplace=True)
@@ -155,7 +159,8 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
         hydro_historical_p_nom = df.loc[:, "p_nom"].sum()
         scaling_factor_hydro_p_nom = hydro_p_nom / hydro_historical_p_nom
 
-        hydro_historical_capacity = (df.loc[:, "p_nom"] * df.loc[:, "max_hours"]).sum()
+        hydro_historical_capacity = (
+            df.loc[:, "p_nom"] * df.loc[:, "max_hours"]).sum()
         scaling_factor_hydro_capacity = hydro_capacity / hydro_historical_capacity
 
         # scale the p_nom and max_hours (used as capacity, max_hours * p_nom = capacity)
@@ -215,7 +220,8 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
         df_compressed_air.columns = df_compressed_air.columns.map(str)
         date = str(year) + "-01-01 00:00:00"
         df_compressed_air_capacity = df_compressed_air[
-            df_compressed_air["Data item"].str.contains("energy capacity", case=False)
+            df_compressed_air["Data item"].str.contains(
+                "energy capacity", case=False)
         ]
         df_compressed_air_p_nom = df_compressed_air[
             df_compressed_air["Data item"].str.contains("p_nom", case=False)
@@ -258,7 +264,8 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
         df_liquid_air.columns = df_liquid_air.columns.map(str)
         date = str(year) + "-01-01 00:00:00"
         df_liquid_air_capacity = df_liquid_air[
-            df_liquid_air["Data item"].str.contains("energy capacity", case=False)
+            df_liquid_air["Data item"].str.contains(
+                "energy capacity", case=False)
         ]
         df_liquid_air_p_nom = df_liquid_air[
             df_liquid_air["Data item"].str.contains("p_nom", case=False)
@@ -294,7 +301,8 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
         df_liquid_air.set_index("name", inplace=True)
 
         # append dataframes
-        df_storage = pd.concat([df, df_battery, df_compressed_air, df_liquid_air])
+        df_storage = pd.concat(
+            [df, df_battery, df_compressed_air, df_liquid_air])
 
         # WRITE FILES
         df_storage.loc[:, "state_of_charge_initial"] = (
@@ -344,7 +352,8 @@ def plot_future_capacities(year):
     plt.title("Installed capacity in year " + str(year))
     plt.tight_layout()
     # plt.show()
-    plt.savefig("../data/FES2021/Capacities Pics/storage_" + str(year) + ".png")
+    plt.savefig("../data/FES2021/Capacities Pics/storage_" +
+                str(year) + ".png")
 
 
 def gif_future_capacities():

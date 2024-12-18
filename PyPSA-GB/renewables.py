@@ -155,7 +155,8 @@ def fix_timeseries_res_for_year(path, year, tech, future):
     """
     if tech == "Solar Photovoltaics":
         # the solar outputs csv files needed to be split up so this appends them together again
-        path = "../data/renewables/atlite/outputs/PV/PV_" + str(year) + "_1" + ".csv"
+        path = "../data/renewables/atlite/outputs/PV/PV_" + \
+            str(year) + "_1" + ".csv"
         df1 = pd.read_csv(path, index_col=0)
         for c in range(2, 5):
             path = (
@@ -202,13 +203,16 @@ def fix_timeseries_res_for_year(path, year, tech, future):
             .str.encode("ascii", errors="ignore")
             .str.decode("utf-8")
         )
-        df_tech["Site Name"] = df_tech["Site Name"].astype(str).str.replace("\xa0", "")
-        df_tech["Site Name"] = df_tech["Site Name"].astype(str).str.replace("ì", "i")
+        df_tech["Site Name"] = df_tech["Site Name"].astype(
+            str).str.replace("\xa0", "")
+        df_tech["Site Name"] = df_tech["Site Name"].astype(
+            str).str.replace("ì", "i")
         df_tech["Site Name"] = df_tech["Site Name"].str.strip()
 
         # check for duplicates
         # check names are unique
-        duplicateDFRow = df_tech[df_tech.duplicated(["Site Name"], keep="first")]
+        duplicateDFRow = df_tech[df_tech.duplicated(
+            ["Site Name"], keep="first")]
         # print(duplicateDFRow)
         # rename duplicates
         for i in range(len(duplicateDFRow.index.values)):
@@ -227,7 +231,8 @@ def fix_timeseries_res_for_year(path, year, tech, future):
 
         # also want to return zeroes for before date
         # change to datetime to compare
-        df2 = pd.to_datetime(df_tech["Operational"], dayfirst=True).dt.to_period("d")
+        df2 = pd.to_datetime(df_tech["Operational"],
+                             dayfirst=True).dt.to_period("d")
         # df_tech['date'] = df2
         # df_tech.loc['date'] = df2
         mask = df2 > "01/01/" + str(year)
@@ -245,7 +250,7 @@ def fix_timeseries_res_for_year(path, year, tech, future):
                 filtered_df["Operational"].values[name], dayfirst=True
             )
             # times before operational dates set to zero
-            df1[sites[name]].loc[df1.index[0] : date_operational] = 0.0
+            df1[sites[name]].loc[df1.index[0]: date_operational] = 0.0
 
     return df1
 
@@ -281,7 +286,8 @@ def read_hydro(year):
 
     file = "../data/renewables/hydro_DUKES_2020.csv"
     df_dukes = pd.read_csv(file, encoding="unicode_escape")
-    df_dukes.loc[:, "Geocoordinates"] = df_dukes["Geocoordinates"].str.replace(",", "")
+    df_dukes.loc[:, "Geocoordinates"] = df_dukes["Geocoordinates"].str.replace(
+        ",", "")
     df_dukes.loc[:, "Geocoordinates"] = df_dukes["Geocoordinates"].str.split()
 
     lat = []
@@ -337,7 +343,8 @@ def read_hydro_time_series(year):
         contains two dataframes of unnorm and normalised timeseries for hydro output
     """
 
-    df = pd.read_csv("../data/renewables/generation_2015-02-22_2020-12-30_ELEXON.csv")
+    df = pd.read_csv(
+        "../data/renewables/generation_2015-02-22_2020-12-30_ELEXON.csv")
     dti = pd.date_range(
         start="2015-02-22 00:00:00", end="2020-12-31 23:30:00", freq="0.5H"
     )
@@ -361,9 +368,11 @@ def read_hydro_time_series(year):
     for i in range(len(df2)):
 
         name = df2.index[i]
-        df_hydro.loc[:, name] = (df2.loc[name, "normalised"] * total_time_series).copy()
+        df_hydro.loc[:, name] = (
+            df2.loc[name, "normalised"] * total_time_series).copy()
         df_hydro_norm.loc[:, name] = (
-            df2.loc[name, "normalised"] * total_time_series / df2.loc[name, "p_nom"]
+            df2.loc[name, "normalised"] *
+            total_time_series / df2.loc[name, "p_nom"]
         ).copy()
 
     # drop the total column
@@ -393,7 +402,8 @@ def read_non_dispatchable_continuous(year):
     df4 = df.loc[df["Technology Type"] == "Sewage Sludge Digestion"]
     df5 = df.loc[df["Technology Type"] == "Shoreline Wave"]
     df6 = df.loc[df["Technology Type"] == "Tidal Barrage and Tidal Stream"]
-    df_NDC = pd.concat([df1, df2, df3, df4, df5, df6], ignore_index=True, sort=False)
+    df_NDC = pd.concat([df1, df2, df3, df4, df5, df6],
+                       ignore_index=True, sort=False)
 
     df_NDC = df_NDC.rename(
         columns={
@@ -474,7 +484,8 @@ def scale_biomass_p_nom(year, scenario, FES):
     # need to remove the original tech
     # but first keep Biomass CCS
     biomass_CCS = generators.loc[generators["carrier"] == "CCS Biomass"]
-    biomass_CCS_UC = generators_UC.loc[generators_UC["carrier"] == "CCS Biomass"]
+    biomass_CCS_UC = generators_UC.loc[generators_UC["carrier"]
+                                       == "CCS Biomass"]
 
     generators = generators[~generators.carrier.str.contains(tech)]
     generators_UC = generators_UC[~generators_UC.carrier.str.contains(tech)]
@@ -512,7 +523,8 @@ def read_tidal_lagoon(year, scenario, fes):
     df_tidal_lagoon_capacities = df_tidal_lagoon_capacities.drop(
         ["Lat", "Lon", "Site ID", "Site Name"]
     )
-    df_tidal_lagoon_capacities = df_tidal_lagoon_capacities.drop(columns=["Total"])
+    df_tidal_lagoon_capacities = df_tidal_lagoon_capacities.drop(columns=[
+                                                                 "Total"])
 
     if fes == 2021:
         # need to get values for years 2020 - 2050
@@ -543,7 +555,8 @@ def read_tidal_lagoon(year, scenario, fes):
     df_tidal_lagoon_locations.drop(
         df_tidal_lagoon_locations.tail(1).index, inplace=True
     )
-    df_tidal_lagoon_locations.rename(columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
+    df_tidal_lagoon_locations.rename(
+        columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
 
     # need to use lat and lon to figure out the nearest bus - then add column called bus
     df = df_tidal_lagoon_locations.rename(columns={"lat": "y", "lon": "x"})
@@ -620,7 +633,8 @@ def read_tidal_stream(year, scenario, fes):
     df_tidal_stream_locations.drop(
         df_tidal_stream_locations.tail(1).index, inplace=True
     )
-    df_tidal_stream_locations.rename(columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
+    df_tidal_stream_locations.rename(
+        columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
 
     # need to use lat and lon to figure out the nearest bus - then add column called bus
     df = df_tidal_stream_locations.rename(columns={"lat": "y", "lon": "x"})
@@ -681,7 +695,8 @@ def read_wave_power(year, scenario, fes):
         df_wave_power_capacities.index = pd.to_datetime(
             df_wave_power_capacities.index, infer_datetime_format=True, utc=True
         )
-        df_wave_power_capacities = df_wave_power_capacities.resample("12MS").asfreq()
+        df_wave_power_capacities = df_wave_power_capacities.resample(
+            "12MS").asfreq()
         df_wave_power_capacities = df_wave_power_capacities.astype(float)
         df_wave_power_capacities = df_wave_power_capacities.interpolate(
             method="linear", limit_direction="forward"
@@ -692,8 +707,10 @@ def read_wave_power(year, scenario, fes):
     df_wave_power_locations = df_wave_power[sheet_name].iloc[:, -3:]
     df_wave_power_locations.index = df_wave_power[sheet_name]["Site ID"]
     # drop the last row as this is a total row
-    df_wave_power_locations.drop(df_wave_power_locations.tail(1).index, inplace=True)
-    df_wave_power_locations.rename(columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
+    df_wave_power_locations.drop(
+        df_wave_power_locations.tail(1).index, inplace=True)
+    df_wave_power_locations.rename(
+        columns={"Lat": "lat", "Lon": "lon"}, inplace=True)
 
     # need to use lat and lon to figure out the nearest bus - then add column called bus
     df = df_wave_power_locations.rename(columns={"lat": "y", "lon": "x"})
@@ -773,7 +790,8 @@ def write_marine_generators(year, scenario, fes):
     df_wave_power["ramp_limit_down"] = 1.0
 
     # in shape to add to LOPF generators
-    df_LOPF = pd.concat([df_LOPF, df_tidal_lagoon, df_tidal_stream, df_wave_power])
+    df_LOPF = pd.concat(
+        [df_LOPF, df_tidal_lagoon, df_tidal_stream, df_wave_power])
 
     df_LOPF.to_csv("LOPF_data/generators.csv", header=True)
 
@@ -852,7 +870,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
     # fix inconsistent name
     df_tidal_lagoon.rename(columns={"Colwyn Bay": "Colwyn"}, inplace=True)
     # interpolate to correct timestep
-    df_tidal_lagoon = df_tidal_lagoon.resample(freq).interpolate("polynomial", order=2)
+    df_tidal_lagoon = df_tidal_lagoon.resample(
+        freq).interpolate("polynomial", order=2)
 
     if len(df_tidal_lagoon.index) < len(df_LOPF.index):
 
@@ -864,7 +883,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
             index=[end],
         )
         # add to existing dataframe
-        df_tidal_lagoon = pd.concat([df_tidal_lagoon, df_new_tidal_lagoon], sort=False)
+        df_tidal_lagoon = pd.concat(
+            [df_tidal_lagoon, df_new_tidal_lagoon], sort=False)
 
     df_tidal_lagoon[df_tidal_lagoon < 0] = 0
     df_tidal_lagoon[df_tidal_lagoon > 1] = 1
@@ -894,7 +914,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
     df_tidal_stream.index = df_tidal_stream.index.round("H")
     df_tidal_stream.drop(df_tidal_stream.tail(1).index, inplace=True)
     # interpolate to correct timestep
-    df_tidal_stream = df_tidal_stream.resample(freq).interpolate("polynomial", order=2)
+    df_tidal_stream = df_tidal_stream.resample(
+        freq).interpolate("polynomial", order=2)
 
     if len(df_tidal_stream.index) < len(df_LOPF.index):
 
@@ -906,7 +927,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
             index=[end],
         )
         # add to existing dataframe
-        df_tidal_stream = pd.concat([df_tidal_stream, df_new_tidal_stream], sort=False)
+        df_tidal_stream = pd.concat(
+            [df_tidal_stream, df_new_tidal_stream], sort=False)
 
     df_tidal_stream[df_tidal_stream < 0] = 0
     df_tidal_stream[df_tidal_stream > 1] = 1
@@ -929,7 +951,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
         "../data/renewables/Marine/capacity_factors_wave_full - Open Source.csv",
         index_col=0,
     )
-    df_wave_power.index = pd.to_datetime(df_wave_power.index, format="%d/%m/%Y %H:%M")
+    df_wave_power.index = pd.to_datetime(
+        df_wave_power.index, format="%d/%m/%Y %H:%M")
     # df_wave_power.index = df_wave_power.index.round('H')
     # interpolate to correct timestep
     df_wave_power = df_wave_power.resample(freq).interpolate("linear").round(5)
@@ -944,7 +967,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
             index=[end],
         )
         # add to existing dataframe
-        df_wave_power = pd.concat([df_wave_power, df_new_wave_power], sort=False)
+        df_wave_power = pd.concat(
+            [df_wave_power, df_new_wave_power], sort=False)
 
     df_wave_power[df_wave_power < 0] = 0
     df_wave_power[df_wave_power > 1] = 1
@@ -1004,7 +1028,8 @@ def aggregate_renewable_generation(start, end, year, time_step):
     freq = snapshots.write_snapshots(start, end, time_step)
 
     # PV
-    df_PV = df.loc[df["carrier"] == "Solar Photovoltaics"].reset_index(drop=True)
+    df_PV = df.loc[df["carrier"] ==
+                   "Solar Photovoltaics"].reset_index(drop=True)
     # delete PV from original dataframe
     df = df[df.carrier != "Solar Photovoltaics"]
     # add in row of total PV power
@@ -1031,7 +1056,8 @@ def aggregate_renewable_generation(start, end, year, time_step):
     df_PV_series = renewables_ninja_data_analysis.PV_corrected_series(year)
     df_PV_series = df_PV_series.loc[start:end]
 
-    df_PV_aggregated_norm = df_PV_series.sum(axis=1) / 1000.0 / df_PV["p_nom"].sum()
+    df_PV_aggregated_norm = df_PV_series.sum(
+        axis=1) / 1000.0 / df_PV["p_nom"].sum()
     df_PV_aggregated_norm = pd.DataFrame(df_PV_aggregated_norm, columns=["PV"])
     # resample to half hourly timesteps
     df_PV_aggregated_norm = df_PV_aggregated_norm.resample(freq).interpolate(
@@ -1050,7 +1076,8 @@ def aggregate_renewable_generation(start, end, year, time_step):
         index=[end],
     )
     # add to existing dataframe
-    df_PV_aggregated_norm = pd.concat([df_PV_aggregated_norm, df_new_PV], sort=False)
+    df_PV_aggregated_norm = pd.concat(
+        [df_PV_aggregated_norm, df_new_PV], sort=False)
 
     df_PV_aggregated_norm.index.name = "name"
 
@@ -1116,7 +1143,8 @@ def aggregate_renewable_generation(start, end, year, time_step):
     df_onshore_aggregated_norm.index.name = "name"
 
     # OFFSHORE WIND
-    df_offshore = df.loc[df["carrier"] == "Wind Offshore"].reset_index(drop=True)
+    df_offshore = df.loc[df["carrier"] ==
+                         "Wind Offshore"].reset_index(drop=True)
     # delete PV from original dataframe
     df = df[df.carrier != "Wind Offshore"]
     # add in row of total PV power
@@ -1216,8 +1244,10 @@ def aggregate_renewable_generation(start, end, year, time_step):
 
     # HYDRO
 
-    df_hydro_small = df.loc[df["carrier"] == "Small Hydro"].reset_index(drop=True)
-    df_hydro_large = df.loc[df["carrier"] == "Large Hydro"].reset_index(drop=True)
+    df_hydro_small = df.loc[df["carrier"] ==
+                            "Small Hydro"].reset_index(drop=True)
+    df_hydro_large = df.loc[df["carrier"] ==
+                            "Large Hydro"].reset_index(drop=True)
     p_nom = df_hydro_small["p_nom"].sum() + df_hydro_large["p_nom"].sum()
     # delete PV from original dataframe
     df = df[df.carrier != "Small Hydro"]
@@ -1404,7 +1434,8 @@ def historical_RES_timeseries(year, tech, future=False):
         # get index of future and pipeline names
         # then get pipeline timeseries
         path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
-        file = "wind_offshore_pipeline_" + str(2020) + ".csv"  # year dosent matter
+        file = "wind_offshore_pipeline_" + \
+            str(2020) + ".csv"  # year dosent matter
         df_pipeline = pd.read_csv(path + file, index_col=0)
         # fix the column names
         df_pipeline.columns = (
@@ -1412,13 +1443,16 @@ def historical_RES_timeseries(year, tech, future=False):
             .str.encode("ascii", errors="ignore")
             .str.decode("utf-8")
         )
-        df_pipeline.columns = df_pipeline.columns.astype(str).str.replace("\xa0", "")
-        df_pipeline.columns = df_pipeline.columns.astype(str).str.replace("ì", "i")
+        df_pipeline.columns = df_pipeline.columns.astype(
+            str).str.replace("\xa0", "")
+        df_pipeline.columns = df_pipeline.columns.astype(
+            str).str.replace("ì", "i")
         df_pipeline.columns = df_pipeline.columns.str.strip()
 
         # first get the timeseries for these areas
         path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
-        file = "wind_offshore_future_" + str(2020) + ".csv"  # year dosent matter
+        file = "wind_offshore_future_" + \
+            str(2020) + ".csv"  # year dosent matter
         df_future = pd.read_csv(path + file, index_col=0)
         # fix the column names
         df_future.columns = (
@@ -1426,7 +1460,8 @@ def historical_RES_timeseries(year, tech, future=False):
             .str.encode("ascii", errors="ignore")
             .str.decode("utf-8")
         )
-        df_future.columns = df_future.columns.astype(str).str.replace("\xa0", "")
+        df_future.columns = df_future.columns.astype(
+            str).str.replace("\xa0", "")
         df_future.columns = df_future.columns.astype(str).str.replace("ì", "i")
         df_future.columns = df_future.columns.str.strip()
 
@@ -1564,16 +1599,19 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
     # now want to normalise using capacities...
     path_UC = "UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
-    gen_tech_UC = generators_UC.loc[generators_UC["carrier"] == "Wind Offshore"]
+    gen_tech_UC = generators_UC.loc[generators_UC["carrier"]
+                                    == "Wind Offshore"]
 
     # combine the timeseries
     result = pd.concat([df_baseline, df_pipeline, df_future], axis=1)
 
     # clean up strings in these original dataframes
-    df_baseline.columns = df_baseline.columns.astype(str).str.replace("\xa0", " ")
+    df_baseline.columns = df_baseline.columns.astype(
+        str).str.replace("\xa0", " ")
     df_baseline = df_baseline.rename(columns=lambda x: x.strip())
     df_baseline.columns = df_baseline.columns.astype(str).str.replace("ì", "i")
-    df_pipeline.columns = df_pipeline.columns.astype(str).str.replace("\xa0", " ")
+    df_pipeline.columns = df_pipeline.columns.astype(
+        str).str.replace("\xa0", " ")
     df_pipeline = df_pipeline.rename(columns=lambda x: x.strip())
     df_pipeline.columns = df_pipeline.columns.astype(str).str.replace("ì", "i")
     df_future.columns = df_future.columns.astype(str).str.replace("\xa0", " ")
@@ -1630,7 +1668,8 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
     # print(gen_tech.p_nom.sum(), 'sum after including pipeline')
 
     # then check if still need more capacity built
-    cap_req = round(offshore_cap_FES - offshore_cap_year - offshore_cap_pipeline, 2)
+    cap_req = round(offshore_cap_FES - offshore_cap_year -
+                    offshore_cap_pipeline, 2)
     # print(cap_req, 'cap required after pipeline')
     # print(cap_req, 'capacity required over 2020 capacity + pipeline capacity')
     # next step is to use capacity from Marine Sector Plan for Scotland
@@ -1683,7 +1722,8 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
     # write new generators.csv file
     # save the dataframes to csv
     generators.loc[generators["carrier"] == "Wind Offshore"] = gen_tech
-    generators_UC.loc[generators_UC["carrier"] == "Wind Offshore"] = gen_tech_UC
+    generators_UC.loc[generators_UC["carrier"]
+                      == "Wind Offshore"] = gen_tech_UC
 
     # print(gen_tech.p_nom.sum(), 'final sum')
 
@@ -1705,7 +1745,8 @@ def future_offshore_sites(year):
     ].reset_index(drop=True)
     # installed capacity 2020
     print(
-        df_res_offshore["Installed Capacity (MWelec)"].sum() / 1000, "GW installed 2020"
+        df_res_offshore["Installed Capacity (MWelec)"].sum(
+        ) / 1000, "GW installed 2020"
     )
 
     # pipeline data
@@ -1744,7 +1785,8 @@ def future_offshore_sites(year):
         date = "31/12/" + str(y)
         df2 = df_pipeline[~(df > date)]
         new_gw = df2["Installed Capacity (MWelec)"].sum() / 1000
-        total_gw = new_gw + df_res_offshore["Installed Capacity (MWelec)"].sum() / 1000
+        total_gw = new_gw + \
+            df_res_offshore["Installed Capacity (MWelec)"].sum() / 1000
         # print(new_gw, 'New GW in ' + str(y))
         # print(total_gw, 'Total GW in ' + str(y))
 
@@ -1766,7 +1808,8 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
         df_res["Technology Type"] == "Wind Offshore"
     ].reset_index(drop=True)
     # installed capacity in baseline year
-    offshore_cap_year = df_res_offshore["Installed Capacity (MWelec)"].sum() / 1000
+    offshore_cap_year = df_res_offshore["Installed Capacity (MWelec)"].sum(
+    ) / 1000
 
     # pipeline data
     df_pipeline = pd.read_csv(
@@ -1845,7 +1888,8 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
         cols = [0, 1, 2, 3, 4]
         df_FES.drop(df_FES.columns[cols], axis=1, inplace=True)
 
-        df_FES_LTW = df_FES[df_FES.index.str.contains("Leading The Way", case=False)]
+        df_FES_LTW = df_FES[df_FES.index.str.contains(
+            "Leading The Way", case=False)]
         df_FES_LTW = pd.DataFrame(df_FES_LTW.sum(numeric_only=True)).T
         df_FES_LTW.index = ["Leading The Way"]
 
@@ -1861,7 +1905,8 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
         df_FES_ST = pd.DataFrame(df_FES_ST.sum(numeric_only=True)).T
         df_FES_ST.index = ["System Transformation"]
 
-        df_FES_SP = df_FES[df_FES.index.str.contains("Falling Short", case=False)]
+        df_FES_SP = df_FES[df_FES.index.str.contains(
+            "Falling Short", case=False)]
         df_FES_SP = pd.DataFrame(df_FES_SP.sum(numeric_only=True)).T
         df_FES_SP.index = ["Falling Short"]
 
@@ -1930,7 +1975,8 @@ def future_RES_capacity(year, tech, scenario, FES):
                 index_col=1,
             )
             df_FES = df_FES[
-                df_FES.SubType.str.contains("Onshore Wind", case=False, na=False)
+                df_FES.SubType.str.contains(
+                    "Onshore Wind", case=False, na=False)
             ]
             df_FES = df_FES[~df_FES.Variable.str.contains("Generation")]
             df_FES = df_FES[~df_FES.Variable.str.contains("Curtailment")]
@@ -1944,7 +1990,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -1955,7 +2002,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_ST = pd.DataFrame(df_FES_ST.sum(numeric_only=True)).T
             df_FES_ST.index = ["System Transformation"]
 
-            df_FES_SP = df_FES[df_FES.index.str.contains("Falling Short", case=False)]
+            df_FES_SP = df_FES[df_FES.index.str.contains(
+                "Falling Short", case=False)]
             df_FES_SP = pd.DataFrame(df_FES_SP.sum(numeric_only=True)).T
             df_FES_SP.index = ["Falling Short"]
 
@@ -1995,7 +2043,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -2006,7 +2055,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_ST = pd.DataFrame(df_FES_ST.sum(numeric_only=True)).T
             df_FES_ST.index = ["System Transformation"]
 
-            df_FES_SP = df_FES[df_FES.index.str.contains("Falling Short", case=False)]
+            df_FES_SP = df_FES[df_FES.index.str.contains(
+                "Falling Short", case=False)]
             df_FES_SP = pd.DataFrame(df_FES_SP.sum(numeric_only=True)).T
             df_FES_SP.index = ["Falling Short"]
 
@@ -2035,7 +2085,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -2062,7 +2113,8 @@ def future_RES_capacity(year, tech, scenario, FES):
                 index_col=1,
             )
             df_FES.dropna(axis="rows", inplace=True)
-            df_FES = df_FES[df_FES.SubType.str.contains("Hydro", case=False, na=False)]
+            df_FES = df_FES[df_FES.SubType.str.contains(
+                "Hydro", case=False, na=False)]
             # drop pumped hydro
             df_FES = df_FES[~df_FES.SubType.str.contains("Pumped Hydro")]
             df_FES = df_FES[~df_FES.Variable.str.contains("Generation")]
@@ -2076,7 +2128,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -2087,7 +2140,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_ST = pd.DataFrame(df_FES_ST.sum(numeric_only=True)).T
             df_FES_ST.index = ["System Transformation"]
 
-            df_FES_SP = df_FES[df_FES.index.str.contains("Falling Short", case=False)]
+            df_FES_SP = df_FES[df_FES.index.str.contains(
+                "Falling Short", case=False)]
             df_FES_SP = pd.DataFrame(df_FES_SP.sum(numeric_only=True)).T
             df_FES_SP.index = ["Falling Short"]
 
@@ -2101,7 +2155,8 @@ def future_RES_capacity(year, tech, scenario, FES):
                 header=9,
                 index_col=1,
             )
-            df_FES = df_FES[df_FES.Type.str.contains("Biomass", case=False, na=False)]
+            df_FES = df_FES[df_FES.Type.str.contains(
+                "Biomass", case=False, na=False)]
             df_FES = df_FES[~df_FES.Variable.str.contains("Generation")]
             cols = [2, 3, 4]
             df_FES.drop(df_FES.columns[cols], axis=1, inplace=True)
@@ -2113,7 +2168,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -2155,7 +2211,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_LTW.index = ["Leading the Way"]
 
             df_FES_CT = df_FES[
-                df_FES.index.str.contains("Consumer Transformation", case=False)
+                df_FES.index.str.contains(
+                    "Consumer Transformation", case=False)
             ]
             df_FES_CT = pd.DataFrame(df_FES_CT.sum(numeric_only=True)).T
             df_FES_CT.index = ["Consumer Transformation"]
@@ -2166,7 +2223,8 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES_ST = pd.DataFrame(df_FES_ST.sum(numeric_only=True)).T
             df_FES_ST.index = ["System Transformation"]
 
-            df_FES_SP = df_FES[df_FES.index.str.contains("Falling Short", case=False)]
+            df_FES_SP = df_FES[df_FES.index.str.contains(
+                "Falling Short", case=False)]
             df_FES_SP = pd.DataFrame(df_FES_SP.sum(numeric_only=True)).T
             df_FES_SP.index = ["Falling Short"]
 
@@ -2187,7 +2245,8 @@ def future_RES_capacity(year, tech, scenario, FES):
         except:
             tech_cap_FES = float(df_FES.loc[scenario, year]) / 1000.0
 
-    capacity_dict = {"tech_cap_year": tech_cap_year, "tech_cap_FES": tech_cap_FES}
+    capacity_dict = {"tech_cap_year": tech_cap_year,
+                     "tech_cap_FES": tech_cap_FES}
 
     return capacity_dict
 
@@ -2237,7 +2296,8 @@ def gif_future_capacities():
     for year in range(2021, 2050 + 1):
         plot_future_capacities(year)
         # list of filenames
-        filenames.append("../data/FES2021/Capacities Pics/" + str(year) + ".png")
+        filenames.append(
+            "../data/FES2021/Capacities Pics/" + str(year) + ".png")
 
     with imageio.get_writer(
         "../data/FES2021/Capacities Pics/FES_installed_capacities.gif",

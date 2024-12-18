@@ -102,16 +102,17 @@ for i in range(int(batches)):
     # only need the second step of UC if interested in marginal prices from this step
 
     if UC_marginal_prices is False:
-        network.lopf(network.snapshots[i : i + horizon], solver_name="gurobi")
+        network.lopf(network.snapshots[i: i + horizon], solver_name="gurobi")
 
     elif UC_marginal_prices is True:
 
         # Build a pyomo model corresponding to the pypsa network
         model = pypsa.opf.network_lopf_build_model(
-            network, snapshots=network.snapshots[i : i + horizon]
+            network, snapshots=network.snapshots[i: i + horizon]
         )
         # Prepare a pyomo optimizer object, here with gurobi
-        opt = pypsa.opf.network_lopf_prepare_solver(network, solver_name="gurobi")
+        opt = pypsa.opf.network_lopf_prepare_solver(
+            network, solver_name="gurobi")
         # solve the MILP
         opt.solve(model).write()
         # generator status print out
@@ -123,7 +124,7 @@ for i in range(int(batches)):
         network.results.write()
         # import back to pypsa datastructures
         pypsa.opf.extract_optimisation_results(
-            network, network.snapshots[i : i + horizon]
+            network, network.snapshots[i: i + horizon]
         )
 
         # can now see marginal prices
@@ -154,9 +155,9 @@ for i in range(int(batches)):
         print("break")
         print(network2.generators.p_min_pu.loc[gen])
 
-    print(network2.snapshots[i : i + 2])
+    print(network2.snapshots[i: i + 2])
     # network constrained on single snapshot
-    network2.lopf(network2.snapshots[i : i + 2], solver_name="gurobi")
+    network2.lopf(network2.snapshots[i: i + 2], solver_name="gurobi")
 
 # can now see marginal prices from unit commitment
 print(network.buses_t.marginal_price)
@@ -330,7 +331,8 @@ ax.set_ylim(
 
 # Shrink current axis's height by 10% on the bottom
 box = ax.get_position()
-ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
+ax.set_position([box.x0, box.y0 + box.height *
+                0.1, box.width, box.height * 0.9])
 
 # Put a legend below current axis
 ax.legend(
@@ -347,7 +349,8 @@ fig, ax = plt.subplots(1, 1)
 fig.set_size_inches(12, 6)
 
 p_storage = network2.storage_units_t.p.sum(axis=1).iloc[0:batches]
-state_of_charge = network2.storage_units_t.state_of_charge.sum(axis=1).iloc[0:batches]
+state_of_charge = network2.storage_units_t.state_of_charge.sum(
+    axis=1).iloc[0:batches]
 p_storage.plot(label="Pumped hydro dispatch", ax=ax, linewidth=3)
 state_of_charge.plot(label="State of charge", ax=ax, linewidth=3)
 
@@ -393,8 +396,10 @@ plt.show()
 carrier = "Wind Onshore"
 
 capacity = network2.generators.groupby("carrier").sum().at[carrier, "p_nom"]
-p_available = network2.generators_t.p_max_pu.multiply(network2.generators["p_nom"])
-p_available_by_carrier = p_available.groupby(network2.generators.carrier, axis=1).sum()
+p_available = network2.generators_t.p_max_pu.multiply(
+    network2.generators["p_nom"])
+p_available_by_carrier = p_available.groupby(
+    network2.generators.carrier, axis=1).sum()
 p_curtailed_by_carrier = p_available_by_carrier - p_by_carrier
 p_df = pd.DataFrame(
     {
