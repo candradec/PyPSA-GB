@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "pypsa-gb"
+version = "0.1.0"
+description = ""
+authors = ["carlos <21239682+candradec@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+numpy = "*"
+scipy = "*"
+pandas = "*"
+geopandas = "*"
+xarray = "*"
+networkx = "*"
+pyyaml = "*"
+pyomo = "*"
+netcdf4 = "*"
+pypsa = "*"
+atlite = "*"
+powerplantmatching = "*"
+rasterio = "*"
+scikit-learn = "*"
+python-dotenv = "*"
+requests = "*"
+ipython = "*"
+jupyterlab = "*"
+notebook = "*"
+ipykernel = "*"
+tabula-py = "*"
+xlrd = "*"
+lxml = "*"
+tables = "*"
+pyxlsb = "*"
+openpyxl = "*"
+
+shapely = "*"
+pyepsg = "*"
+cartopy = "*"
+country_converter = "*"
+
+matplotlib = "*"
+plotly = "*"
+hvplot = "*"
+holoviews = "*"
+geoviews = "*"
+graphviz = "*"
+seaborn = "*"
+imageio = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+isort = "*"
+nox = "*"
+mypy = "*"
+ruff = "*"
+flake8 = "*"
+flake8-black = "*"
+flake8-isort = "*"
+autopep8 = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
