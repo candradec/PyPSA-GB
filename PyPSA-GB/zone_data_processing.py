@@ -7,9 +7,9 @@ import ruamel.yaml
 
 def create_path():
     path = [
-        "../data/ZonesBasedGBsystem/demand/",
-        "../data/ZonesBasedGBsystem/interconnectors/",
-        "../data/ZonesBasedGBsystem/network/",
+        "data/ZonesBasedGBsystem/demand/",
+        "data/ZonesBasedGBsystem/interconnectors/",
+        "data/ZonesBasedGBsystem/network/",
     ]
     for p in path:
         if not os.path.exists(p):
@@ -17,42 +17,42 @@ def create_path():
 
 
 def copy_buses_based(year=2021):
-    if not os.path.exists("../data/BusesBasedGBsystem/demand/"):
-        os.makedirs("../data/BusesBasedGBsystem/demand/")
+    if not os.path.exists("data/BusesBasedGBsystem/demand/"):
+        os.makedirs("data/BusesBasedGBsystem/demand/")
         shutil.copy(
-            "../data/demand/Demand_Distribution.csv",
-            "../data/BusesBasedGBsystem/demand/Demand_Distribution.csv",
+            "data/demand/Demand_Distribution.csv",
+            "data/BusesBasedGBsystem/demand/Demand_Distribution.csv",
         )
 
-    if not os.path.exists("../data/BusesBasedGBsystem/Distributions/"):
+    if not os.path.exists("data/BusesBasedGBsystem/Distributions/"):
         shutil.copytree(
-            "../data/FES" + str(year) + "/Distributions",
-            "../data/BusesBasedGBsystem/Distributions",
+            "data/FES" + str(year) + "/Distributions",
+            "data/BusesBasedGBsystem/Distributions",
         )
 
-    if not os.path.exists("../data/BusesBasedGBsystem/interconnectors/"):
+    if not os.path.exists("data/BusesBasedGBsystem/interconnectors/"):
         shutil.copytree(
-            "../data/interconnectors", "../data/BusesBasedGBsystem/interconnectors"
+            "data/interconnectors", "data/BusesBasedGBsystem/interconnectors"
         )
 
-    if not os.path.exists("../data/BusesBasedGBsystem/network/"):
-        os.makedirs("../data/BusesBasedGBsystem/network/")
+    if not os.path.exists("data/BusesBasedGBsystem/network/"):
+        os.makedirs("data/BusesBasedGBsystem/network/")
         shutil.copy(
-            "../data/network/buses.csv", "../data/BusesBasedGBsystem/network/buses.csv"
+            "data/network/buses.csv", "data/BusesBasedGBsystem/network/buses.csv"
         )
         shutil.copy(
-            "../data/network/GBreducednetwork.m",
-            "../data/BusesBasedGBsystem/network/GBreducednetwork.m",
+            "data/network/GBreducednetwork.m",
+            "data/BusesBasedGBsystem/network/GBreducednetwork.m",
         )
         shutil.copy(
-            "../data/network/lines.csv", "../data/BusesBasedGBsystem/network/lines.csv"
+            "data/network/lines.csv", "data/BusesBasedGBsystem/network/lines.csv"
         )
 
 
 def zone_interconnectors():
-    if os.path.exists("../data/BusesBasedGBsystem/network/buses.csv"):
+    if os.path.exists("data/BusesBasedGBsystem/network/buses.csv"):
         copy_buses_based()
-    pd_buses = pd.read_csv("../data/network/buses.csv")
+    pd_buses = pd.read_csv("data/network/buses.csv")
 
     pd_buses["zone"] = allocate_to_zone.map_to_zone(pd_buses)
 
@@ -63,33 +63,33 @@ def zone_interconnectors():
         out["bus1"] = zone
         return pd.Series(out)
 
-    if os.path.exists("../data/BusesBasedGBsystem/interconnectors/links.csv"):
+    if os.path.exists("data/BusesBasedGBsystem/interconnectors/links.csv"):
         copy_buses_based()
-    pd_links = pd.read_csv("../data/BusesBasedGBsystem/interconnectors/links.csv")
+    pd_links = pd.read_csv("data/BusesBasedGBsystem/interconnectors/links.csv")
     pd_links["bus1"] = pd_links.apply(lambda r: repalce_to_zone(r, pd_buses), axis=1)
 
-    if not os.path.exists("../data/ZonesBasedGBsystem/interconnectors/"):
+    if not os.path.exists("data/ZonesBasedGBsystem/interconnectors/"):
         create_path()
-    pd_links.to_csv("../data/ZonesBasedGBsystem/interconnectors/links.csv", index=None)
+    pd_links.to_csv("data/ZonesBasedGBsystem/interconnectors/links.csv", index=None)
 
-    if os.path.exists("../data/BusesBasedGBsystem/interconnectors/links.csv"):
+    if os.path.exists("data/BusesBasedGBsystem/interconnectors/links.csv"):
         copy_buses_based()
     pd_links_future = pd.read_csv(
-        "../data/BusesBasedGBsystem/interconnectors/links.csv"
+        "data/BusesBasedGBsystem/interconnectors/links.csv"
     )
     pd_links_future["bus1"] = pd_links_future.apply(
         lambda r: repalce_to_zone(r, pd_buses), axis=1
     )
 
     pd_links_future.to_csv(
-        "../data/ZonesBasedGBsystem/interconnectors/links_future.csv", index=None
+        "data/ZonesBasedGBsystem/interconnectors/links_future.csv", index=None
     )
 
 
 def zone_buses():
     # Note the buses' lat and lon in this context is just the equivalent Centroid points in each zone.
     # sourcs: uk-calliope project https://github.com/calliope-project/uk-calliope
-    file = "../data/network/model.yaml"
+    file = "data/network/model.yaml"
 
     with open(file) as stream:
         data = ruamel.yaml.safe_load(stream)
@@ -113,15 +113,15 @@ def zone_buses():
     df_zonebuses["v_nom"] = 400
     df_zonebuses["carrier"] = "AC"
 
-    if not os.path.exists("../data/ZonesBasedGBsystem/network/"):
+    if not os.path.exists("data/ZonesBasedGBsystem/network/"):
         initialisation_zone_based.create_path()
     df_zonebuses.to_csv(
-        "../data/ZonesBasedGBsystem/network/buses.csv", index=False, header=True
+        "data/ZonesBasedGBsystem/network/buses.csv", index=False, header=True
     )
 
 
 def zone_links():
-    file = "../data/network/transmission_grid_2030.yaml"
+    file = "data/network/transmission_grid_2030.yaml"
 
     with open(file) as stream:
         data = ruamel.yaml.safe_load(stream)
@@ -154,10 +154,10 @@ def zone_links():
     df_zonelinks["p_min_pu"] = -1
     df_zonelinks["p_max_pu"] = 1
 
-    if not os.path.exists("../data/ZonesBasedGBsystem/network/"):
+    if not os.path.exists("data/ZonesBasedGBsystem/network/"):
         initialisation_zone_based.create_path()
     df_zonelinks.to_csv(
-        "../data/ZonesBasedGBsystem/network/links.csv", index=False, header=True
+        "data/ZonesBasedGBsystem/network/links.csv", index=False, header=True
     )
 
 

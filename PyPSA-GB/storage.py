@@ -21,7 +21,7 @@ def read_storage_data(year):
         data on storage units
     """
 
-    file = "../data/storage_data.csv"
+    file = "data/storage_data.csv"
     df = pd.read_csv(file)
     df1 = renewables.REPD_date_corrected(year)
     df2 = df1.loc[
@@ -36,13 +36,13 @@ def future_storage(FES):
 
     if FES == 2021:
         df_FES = pd.read_excel(
-            "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+            "data/FES2021/FES 2021 Data Workbook V04.xlsx",
             sheet_name="FLX1",
             header=9,
         )
     elif FES == 2022:
         df_FES = pd.read_excel(
-            "../data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="FLX1", header=9
+            "data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="FLX1", header=9
         )
 
     df_battery = df_FES[df_FES.Detail.str.contains("Battery", case=False)]
@@ -107,7 +107,7 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
 
     df = read_storage_data(year)
     df_storage_data_by_type = pd.read_csv(
-        "../data/storage_data_by_type.csv", index_col=0
+        "data/storage_data_by_type.csv", index_col=0
     )
 
     if year < 2021:
@@ -128,7 +128,7 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
 
         # as first pass distribute the batteries across the nodes evenly
         # read in the buses
-        df_buses = pd.read_csv("LOPF_data/buses.csv", index_col=0)
+        df_buses = pd.read_csv("data/LOPF_data/buses.csv", index_col=0)
         # remove interconnector buses
         df_buses = df_buses[~df_buses.carrier.str.contains("DC")]
 
@@ -324,7 +324,7 @@ def plot_future_capacities(year):
     if year <= 2020:
         data_reader_writer.data_writer(start, end, time_step, year)
 
-    df_storage = pd.read_csv("LOPF_data/storage_units.csv", index_col=0)
+    df_storage = pd.read_csv("data/LOPF_data/storage_units.csv", index_col=0)
     storage_p_nom = df_storage.p_nom.groupby(df_storage.carrier).sum()
     # storage_p_nom.drop('Unmet Load', inplace=True)
     # storage_p_nom.drop(storage_p_nom[storage_p_nom < 500].index, inplace=True)
@@ -344,7 +344,7 @@ def plot_future_capacities(year):
     plt.title("Installed capacity in year " + str(year))
     plt.tight_layout()
     # plt.show()
-    plt.savefig("../data/FES2021/Capacities Pics/storage_" + str(year) + ".png")
+    plt.savefig("data/FES2021/Capacities Pics/storage_" + str(year) + ".png")
 
 
 def gif_future_capacities():
@@ -354,11 +354,11 @@ def gif_future_capacities():
         plot_future_capacities(year)
         # list of filenames
         filenames.append(
-            "../data/FES2021/Capacities Pics/storage_" + str(year) + ".png"
+            "data/FES2021/Capacities Pics/storage_" + str(year) + ".png"
         )
 
     with imageio.get_writer(
-        "../data/FES2021/Capacities Pics/FES_storage_installed_capacities.gif",
+        "data/FES2021/Capacities Pics/FES_storage_installed_capacities.gif",
         mode="I",
         duration=1.0,
     ) as writer:

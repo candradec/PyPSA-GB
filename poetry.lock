@@ -3231,6 +3231,16 @@ files = [
 et-xmlfile = "*"
 
 [[package]]
+name = "osgb"
+version = "1.2.0"
+description = "osgb - high-precision geographic coordinate conversion for Great Britain, based on Ordnance Survey data"
+optional = false
+python-versions = "*"
+files = [
+    {file = "osgb-1.2.0.tar.gz", hash = "sha256:4175434d000d3d18489b086ce2bd162fcca74ca26b5537084a985ab891d41a02"},
+]
+
+[[package]]
 name = "overrides"
 version = "7.7.0"
 description = "A decorator to automatically detect mismatch when overriding a method."
@@ -5309,4 +5319,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "1c676986a08d58bf391d243ae193a00b87125ef0ca77ee8f16afb6e04ef4b1c3"
+content-hash = "3118dd4bc16e543d8a0d755475a1e6452061c0333517d09b8f5b93c3931ea3eb"

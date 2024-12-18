@@ -10,7 +10,7 @@ def read_tidal_stream(year, scenario, networkmodel):
 
         # read in new marine scenarios
         df_tidal_stream = pd.read_excel(
-            "../data/renewables/Marine/tidal_stream_future_deployment_scenarios.xlsx",
+            "data/renewables/Marine/tidal_stream_future_deployment_scenarios.xlsx",
             sheet_name=None,
         )
         if scenario == "Low":
@@ -66,7 +66,7 @@ def read_wave_power(year, scenario, networkmodel):
 
         # read in new marine scenarios
         df_wave_power = pd.read_excel(
-            "../data/renewables/Marine/wave_power_future_deployment_scenarios.xlsx",
+            "data/renewables/Marine/wave_power_future_deployment_scenarios.xlsx",
             sheet_name=None,
         )
         if scenario == "Low":
@@ -122,7 +122,7 @@ def read_floating_wind(year, scenario):
 
         # read in new marine scenarios
         df_floating_wind = pd.read_excel(
-            "../data/renewables/Marine/floating_wind_deployment_scenarios.xlsx",
+            "data/renewables/Marine/floating_wind_deployment_scenarios.xlsx",
             sheet_name=None,
         )
         if scenario == "Low":
@@ -176,7 +176,7 @@ def rewrite_generators_for_marine(year, tech, scenario, networkmodel="Reduced"):
     elif tech == "Wave power":
         dic = read_wave_power(year, scenario, networkmodel)
 
-    df_generators = pd.read_csv("LOPF_data/generators.csv", index_col=0)
+    df_generators = pd.read_csv("data/LOPF_data/generators.csv", index_col=0)
 
     # remove the Wave power and Tidal stream in the df_generators
     if tech == "Floating wind":
@@ -223,8 +223,8 @@ def rewrite_generators_for_marine(year, tech, scenario, networkmodel="Reduced"):
 
 def check_consistency_with_p_max_pu():
 
-    df_generators = pd.read_csv("LOPF_data/generators.csv", index_col=0)
-    df_p_max_pu = pd.read_csv("LOPF_data/generators-p_max_pu.csv", index_col=0)
+    df_generators = pd.read_csv("data/LOPF_data/generators.csv", index_col=0)
+    df_p_max_pu = pd.read_csv("data/LOPF_data/generators-p_max_pu.csv", index_col=0)
     print(
         all(
             item in df_p_max_pu.columns

@@ -32,7 +32,7 @@ def gsp_to_bus(row, df_gsp_data):
 
 def add_P2G(year, scenario=None):
 
-    path = "LOPF_data/"
+    path = "data/LOPF_data/"
 
     if scenario == "Leading The Way":
         scenario = "Leading the Way"
@@ -90,14 +90,14 @@ def add_P2G(year, scenario=None):
     pd_generators.to_csv(path + "generators.csv")
 
     df_gsp_data = pd.read_csv(
-        "../data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
+        "data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
     )
     df_gsp_data = df_gsp_data[["Latitude", "Longitude"]]
     df_gsp_data.rename(columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
     df_gsp_data["Bus"] = dc.map_to_bus(df_gsp_data)
 
     df_FES_bb = pd.read_excel(
-        "../data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="BB1"
+        "data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="BB1"
     )
     df_P2G = df_FES_bb[
         (df_FES_bb["FES Scenario"] == scenario)

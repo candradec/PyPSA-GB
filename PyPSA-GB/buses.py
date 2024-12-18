@@ -17,16 +17,16 @@ def write_buses(year, networkmodel="Reduced"):
         df = pd.DataFrame(data=data, index=[0])
         df.to_csv("UC_data/buses.csv", index=False, header=True)
 
-        file = "../data/network/buses.csv"
+        file = "data/network/buses.csv"
         df = pd.read_csv(file)
 
         if year <= 2020:
             df["carrier"] = "AC"
         df.to_csv("LOPF_data/buses.csv", index=False, header=True)
 
-        df_buses = pd.read_csv("../data/network/BusesBasedGBsystem/network/buses.csv")
+        df_buses = pd.read_csv("data/network/BusesBasedGBsystem/network/buses.csv")
         df_buses.to_csv("LOPF_data/buses.csv", index=False, header=True)
 
     elif networkmodel == "Zonal":
-        df_buses = pd.read_csv("../data/network/ZonesBasedGBsystem/network/buses.csv")
+        df_buses = pd.read_csv("data/network/ZonesBasedGBsystem/network/buses.csv")
         df_buses.to_csv("LOPF_data/buses.csv", index=False, header=True)

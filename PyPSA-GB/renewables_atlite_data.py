@@ -39,7 +39,7 @@ def renewable_data_write_atlite(year, tech):
     # Directory
     directory = tech.replace(" ", "_")
     # Parent Directory path
-    parent_dir = "../data/renewables/atlite/inputs/"
+    parent_dir = "data/renewables/atlite/inputs/"
     # Path
     path = os.path.join(parent_dir, directory)
     try:
@@ -68,7 +68,7 @@ def offshore_wind_pipeline(year):
 
     # pipeline data
     df_pipeline = pd.read_csv(
-        "../data/renewables/future_offshore_sites/offshore_pipeline.csv",
+        "data/renewables/future_offshore_sites/offshore_pipeline.csv",
         encoding="unicode_escape",
         index_col=2,
     )
@@ -117,7 +117,7 @@ def offshore_wind_pipeline(year):
     df2.drop(columns=["X-coordinate", "Y-coordinate"], inplace=True)
     print(df2)
     df2.to_csv(
-        "../data/renewables/atlite/inputs/offshore_pipeline_" + str(year) + ".csv",
+        "data/renewables/atlite/inputs/offshore_pipeline_" + str(year) + ".csv",
         header=True,
         index=True,
     )
@@ -125,7 +125,7 @@ def offshore_wind_pipeline(year):
 
 def offshore_wind_scotland_planned():
     df_plan = pd.read_csv(
-        "../data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
+        "data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
         encoding="unicode_escape",
         index_col=0,
     )

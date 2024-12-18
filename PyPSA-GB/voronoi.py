@@ -18,7 +18,7 @@ from geovoronoi.plotting import (plot_voronoi_polys_with_points_in_area,
 from scipy.spatial import Voronoi
 from shapely.geometry import Polygon
 
-df_network = pd.read_csv("LOPF_data/buses.csv")
+df_network = pd.read_csv("data/LOPF_data/buses.csv")
 lon = df_network["x"].values
 lat = df_network["y"].values
 proj = pyproj.Transformer.from_crs(4326, 3857, always_xy=True)

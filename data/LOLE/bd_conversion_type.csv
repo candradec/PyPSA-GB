@@ -1,7 +1,7 @@
 0,1
 Coal,Coal
 Nuclear,Nuclear
-Oil,OCGT
+Oil,Simil-OCGT
 Wind Offshore,Weather Dependent
 Wind Onshore,Weather Dependent
 Solar Photovoltaics,Weather Dependent
@@ -17,13 +17,13 @@ Biomass (co-firing),Biomass
 Biomass (dedicated),Biomass
 Pumped Storage Hydroelectric,Pumped storage
 Battery,Battery
-Compressed Air,CCGT
-Liquid Air,CCGT
+Compressed Air,Simil-CCGT
+Liquid Air,Simil-CCGT
 Interconnector,Interconnector
 Englandconnector,Englandconnector
-CCS Gas,CCGT
+CCS Gas,Simil-CCGT
 CCS Biomass,Biomass
-Hydrogen,CCGT
+Hydrogen,Hydrogen
 Unmet Load,Excluded
 Tidal lagoon,Excluded
 Tidal stream,Excluded

@@ -893,7 +893,7 @@ Text(0.5, 0, &#39;&#39;)
 <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p_by_type</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
 
 <span class="c1"># reading in the emissions intensity data contained in relevant .csv as a dataframe</span>
-<span class="n">emissions_intensity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/emissions_intensity_by_types.csv&#39;</span><span class="p">)</span>
+<span class="n">emissions_intensity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/emissions_intensity_by_types.csv&#39;</span><span class="p">)</span>
 <span class="n">emissions_intensity_LOPF</span> <span class="o">=</span> <span class="n">emissions_intensity</span><span class="p">[</span><span class="n">emissions_intensity</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">types</span><span class="p">)]</span>
 <span class="n">emissions_intensity_LOPF</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">)</span>
 <span class="n">EI_factors</span> <span class="o">=</span> <span class="n">emissions_intensity_LOPF</span><span class="p">[</span><span class="s1">&#39;Emissions Intensity [gCO2/kWh]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -1076,7 +1076,7 @@ Average emissions intensity over the period, Method 2 =  29.386507913314873 gCO2
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dataframe of emissions intensity data by reading in the emissions intensity data contained in relevant .csv</span>
-<span class="n">emissions_intensity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/emissions_intensity_by_types.csv&#39;</span><span class="p">)</span>
+<span class="n">emissions_intensity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/emissions_intensity_by_types.csv&#39;</span><span class="p">)</span>
 <span class="n">emissions_intensity</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;EI&#39;</span><span class="p">]</span>
 </pre></div>
 </div>

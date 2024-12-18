@@ -23,7 +23,7 @@ def read_REPD():
     """
 
     # name of file here
-    file = "../data/renewables/renewable-energy-planning-database-q1-march-2021.csv"
+    file = "data/renewables/renewable-energy-planning-database-q1-march-2021.csv"
 
     # only important fields
     fields = [
@@ -155,11 +155,11 @@ def fix_timeseries_res_for_year(path, year, tech, future):
     """
     if tech == "Solar Photovoltaics":
         # the solar outputs csv files needed to be split up so this appends them together again
-        path = "../data/renewables/atlite/outputs/PV/PV_" + str(year) + "_1" + ".csv"
+        path = "data/renewables/atlite/outputs/PV/PV_" + str(year) + "_1" + ".csv"
         df1 = pd.read_csv(path, index_col=0)
         for c in range(2, 5):
             path = (
-                "../data/renewables/atlite/outputs/PV/PV_"
+                "data/renewables/atlite/outputs/PV/PV_"
                 + str(year)
                 + "_"
                 + str(c)
@@ -279,7 +279,7 @@ def read_hydro(year):
     df_REDP = df_REDP[["name", "type", "p_nom", "lat", "lon"]]
     # print(df_REDP)
 
-    file = "../data/renewables/hydro_DUKES_2020.csv"
+    file = "data/renewables/hydro_DUKES_2020.csv"
     df_dukes = pd.read_csv(file, encoding="unicode_escape")
     df_dukes.loc[:, "Geocoordinates"] = df_dukes["Geocoordinates"].str.replace(",", "")
     df_dukes.loc[:, "Geocoordinates"] = df_dukes["Geocoordinates"].str.split()
@@ -337,7 +337,7 @@ def read_hydro_time_series(year):
         contains two dataframes of unnorm and normalised timeseries for hydro output
     """
 
-    df = pd.read_csv("../data/renewables/generation_2015-02-22_2020-12-30_ELEXON.csv")
+    df = pd.read_csv("data/renewables/generation_2015-02-22_2020-12-30_ELEXON.csv")
     dti = pd.date_range(
         start="2015-02-22 00:00:00", end="2020-12-31 23:30:00", freq="0.5H"
     )
@@ -449,13 +449,13 @@ def scale_biomass_p_nom(year, scenario, FES):
     t2 = "Biomass (dedicated)"
 
     # get generators dataframe with p_noms to be scaled
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech1 = generators.loc[generators["carrier"] == t1]
     gen_tech2 = generators.loc[generators["carrier"] == t2]
     gen_tech = pd.concat([gen_tech1, gen_tech2])
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC1 = generators_UC.loc[generators_UC["carrier"] == t1]
     gen_tech_UC2 = generators_UC.loc[generators_UC["carrier"] == t2]
@@ -491,7 +491,7 @@ def scale_biomass_p_nom(year, scenario, FES):
 def read_tidal_lagoon(year, scenario, fes):
 
     df_tidal_lagoon = pd.read_excel(
-        "../data/renewables/Marine/tidal_lagoon_future_deployment_scenarios.xlsx",
+        "data/renewables/Marine/tidal_lagoon_future_deployment_scenarios.xlsx",
         sheet_name=None,
     )
     # print(df_tidal_lagoon)
@@ -567,7 +567,7 @@ def read_tidal_lagoon(year, scenario, fes):
 def read_tidal_stream(year, scenario, fes):
 
     df_tidal_stream = pd.read_excel(
-        "../data/renewables/Marine/tidal_stream_future_deployment_scenarios.xlsx",
+        "data/renewables/Marine/tidal_stream_future_deployment_scenarios.xlsx",
         sheet_name=None,
     )
     # print(df_tidal_stream)
@@ -644,7 +644,7 @@ def read_tidal_stream(year, scenario, fes):
 def read_wave_power(year, scenario, fes):
 
     df_wave_power = pd.read_excel(
-        "../data/renewables/Marine/wave_power_future_deployment_scenarios.xlsx",
+        "data/renewables/Marine/wave_power_future_deployment_scenarios.xlsx",
         sheet_name=None,
     )
     # print(df_wave_power)
@@ -718,9 +718,9 @@ def write_marine_generators(year, scenario, fes):
     # ADD NEW GENERATORS FOR MARINE
 
     # get generators
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     df_LOPF = pd.read_csv(path, index_col=0)
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     df_UC = pd.read_csv(path_UC, index_col=0)
 
     # want to remove historical marine generators
@@ -808,7 +808,7 @@ def write_marine_generators(year, scenario, fes):
 
 def add_marine_timeseries(year, year_baseline, scenario, time_step):
 
-    path = "LOPF_data/generators-p_max_pu.csv"
+    path = "data/LOPF_data/generators-p_max_pu.csv"
     df_LOPF = pd.read_csv(path, index_col=0)
 
     year_orig = year
@@ -836,7 +836,7 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
     # TIDAL LAGOON
 
     df_tidal_lagoon = pd.read_excel(
-        "../data/renewables/Marine/tidal_lagoon_full.xlsx", sheet_name=str(year)
+        "data/renewables/Marine/tidal_lagoon_full.xlsx", sheet_name=str(year)
     )
     df_tidal_lagoon.index = df_tidal_lagoon["Date/time"]
     df_tidal_lagoon.drop(["Date/time"], axis=1, inplace=True)
@@ -884,7 +884,7 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
 
     # TIDAL STREAM
 
-    path = "../data/renewables/Marine/tidal_stream_" + str(year) + "_full.xlsx"
+    path = "data/renewables/Marine/tidal_stream_" + str(year) + "_full.xlsx"
     df_tidal_stream = pd.read_excel(path)
     df_tidal_stream.index = df_tidal_stream["Date/time"]
     df_tidal_stream.drop(["Date/time"], axis=1, inplace=True)
@@ -926,7 +926,7 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
     # WAVE POWER
 
     df_wave_power = pd.read_csv(
-        "../data/renewables/Marine/capacity_factors_wave_full - Open Source.csv",
+        "data/renewables/Marine/capacity_factors_wave_full - Open Source.csv",
         index_col=0,
     )
     df_wave_power.index = pd.to_datetime(df_wave_power.index, format="%d/%m/%Y %H:%M")
@@ -998,7 +998,7 @@ def aggregate_renewable_generation(start, end, year, time_step):
     # want to aggregate renewable generation to speed up UC solving
 
     # read in the generator file
-    df = pd.read_csv("UC_data/generators.csv")
+    df = pd.read_csv("data/UC_data/generators.csv")
     # print(df)
 
     freq = snapshots.write_snapshots(start, end, time_step)
@@ -1243,7 +1243,7 @@ def aggregate_renewable_generation(start, end, year, time_step):
         ignore_index=True,
     )
 
-    df_series = pd.read_csv("UC_data/generators-p_max_pu.csv")
+    df_series = pd.read_csv("data/UC_data/generators-p_max_pu.csv")
     # print(df_series)
     # limited to using bonnington which has been there for years so should work,
     # but this could be improved
@@ -1343,7 +1343,7 @@ def RES_correction_factors():
             else:
                 gen_year = gen_data_dict[t][str(y)]
                 path = (
-                    "../data/renewables/atlite/outputs/"
+                    "data/renewables/atlite/outputs/"
                     + t
                     + "/"
                     + t
@@ -1360,7 +1360,7 @@ def RES_correction_factors():
                 factor_dict_year[t] = factor
         factor_dict[y] = factor_dict_year
 
-    path = "../data/renewables/atlite/"
+    path = "data/renewables/atlite/"
     file = "RES_correction_factors.csv"
     df_factors = pd.DataFrame(factor_dict)
     df_factors.to_csv(path + file, header=True)
@@ -1374,7 +1374,7 @@ def historical_RES_timeseries(year, tech, future=False):
     if tech == "Solar Photovoltaics":
         tech_ = "PV"
     path = (
-        "../data/renewables/atlite/outputs/"
+        "data/renewables/atlite/outputs/"
         + tech_
         + "/"
         + tech_
@@ -1396,14 +1396,14 @@ def historical_RES_timeseries(year, tech, future=False):
 
     # # now want to normalise using capacities...
     # # read in the renewable generators
-    df_gen = pd.read_csv("LOPF_data/generators.csv", index_col=0)
+    df_gen = pd.read_csv("data/LOPF_data/generators.csv", index_col=0)
     df_res_tech = df_gen.loc[df_gen["carrier"] == tech]
 
     # need to remove future and pipeline wind offshore
     if tech == "Wind Offshore" and future is True:
         # get index of future and pipeline names
         # then get pipeline timeseries
-        path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
+        path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
         file = "wind_offshore_pipeline_" + str(2020) + ".csv"  # year dosent matter
         df_pipeline = pd.read_csv(path + file, index_col=0)
         # fix the column names
@@ -1417,7 +1417,7 @@ def historical_RES_timeseries(year, tech, future=False):
         df_pipeline.columns = df_pipeline.columns.str.strip()
 
         # first get the timeseries for these areas
-        path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
+        path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
         file = "wind_offshore_future_" + str(2020) + ".csv"  # year dosent matter
         df_future = pd.read_csv(path + file, index_col=0)
         # fix the column names
@@ -1457,7 +1457,7 @@ def future_RES_scale_p_nom(year, tech, scenario, FES):
         t2 = "Large Hydro"
 
         # get generators dataframe with p_noms to be scaled
-        path = "LOPF_data/generators.csv"
+        path = "data/LOPF_data/generators.csv"
         generators = pd.read_csv(path, index_col=0)
         # this deletes the hydrogen generators so need to keep these
         hydrogen = generators.loc[generators["carrier"] == "Hydrogen"]
@@ -1465,7 +1465,7 @@ def future_RES_scale_p_nom(year, tech, scenario, FES):
         gen_tech2 = generators.loc[generators["carrier"] == t2]
         gen_tech = pd.concat([gen_tech1, gen_tech2])
 
-        path_UC = "UC_data/generators.csv"
+        path_UC = "data/UC_data/generators.csv"
         generators_UC = pd.read_csv(path_UC, index_col=0)
         # this deletes the hydrogen generators so need to keep these
         hydrogen_UC = generators_UC.loc[generators_UC["carrier"] == "Hydrogen"]
@@ -1476,11 +1476,11 @@ def future_RES_scale_p_nom(year, tech, scenario, FES):
     elif tech == "Wind Onshore" or tech == "Solar Photovoltaics" or "Wind Offshore":
 
         # get generators dataframe with p_noms to be scaled
-        path = "LOPF_data/generators.csv"
+        path = "data/LOPF_data/generators.csv"
         generators = pd.read_csv(path, index_col=0)
         gen_tech = generators.loc[generators["carrier"] == tech]
 
-        path_UC = "UC_data/generators.csv"
+        path_UC = "data/UC_data/generators.csv"
         generators_UC = pd.read_csv(path_UC, index_col=0)
         gen_tech_UC = generators_UC.loc[generators_UC["carrier"] == tech]
 
@@ -1530,13 +1530,13 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
     ]
 
     # then get pipeline timeseries
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
     file = "wind_offshore_pipeline_" + str(year_baseline) + ".csv"
     df_pipeline = pd.read_csv(path + file, index_col=0)
     df_pipeline.index = df_baseline.index
 
     # first get the timeseries for these areas
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
     file = "wind_offshore_future_" + str(year_baseline) + ".csv"
     df_future = pd.read_csv(path + file, index_col=0)
     df_future.index = df_baseline.index
@@ -1557,12 +1557,12 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
             ]
 
     # now want to normalise using capacities...
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["carrier"] == "Wind Offshore"]
 
     # now want to normalise using capacities...
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["carrier"] == "Wind Offshore"]
 
@@ -1770,7 +1770,7 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
 
     # pipeline data
     df_pipeline = pd.read_csv(
-        "../data/renewables/future_offshore_sites/offshore_pipeline.csv",
+        "data/renewables/future_offshore_sites/offshore_pipeline.csv",
         encoding="unicode_escape",
         index_col=2,
     )
@@ -1807,7 +1807,7 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
     # print(offshore_cap_pipeline, 'New GW in ' + str(year_pipeline))
 
     df_scotland = pd.read_csv(
-        "../data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
+        "data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
         encoding="unicode_escape",
     )
     offshore_cap_scotland_planning = df_scotland["max capacity (GW)"].sum()
@@ -1815,7 +1815,7 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
     if FES == 2021:
         # offshore wind capacity from FES2021
         df_FES = pd.read_excel(
-            "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+            "data/FES2021/FES 2021 Data Workbook V04.xlsx",
             sheet_name="SV.28",
             usecols="M:AS",
             header=7,
@@ -1831,7 +1831,7 @@ def future_offshore_capacity(year, year_baseline, scenario, FES):
         # print(type(offshore_cap_FES))
     elif FES == 2022:
         df_FES = pd.read_excel(
-            "../data/FES2022/FES2022 Workbook V4.xlsx",
+            "data/FES2022/FES2022 Workbook V4.xlsx",
             sheet_name="ES1",
             header=9,
             index_col=1,
@@ -1913,7 +1913,7 @@ def future_RES_capacity(year, tech, scenario, FES):
     if tech == "Wind Onshore":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="SV.29",
                 usecols="M:AS",
                 header=6,
@@ -1924,7 +1924,7 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES.dropna(axis="rows", inplace=True)
         if FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1965,7 +1965,7 @@ def future_RES_capacity(year, tech, scenario, FES):
     elif tech == "Solar Photovoltaics":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="SV.31",
                 usecols="L:AR",
                 header=5,
@@ -1976,7 +1976,7 @@ def future_RES_capacity(year, tech, scenario, FES):
             df_FES.dropna(axis="rows", inplace=True)
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -2016,7 +2016,7 @@ def future_RES_capacity(year, tech, scenario, FES):
     elif tech == "Hydro":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -2056,7 +2056,7 @@ def future_RES_capacity(year, tech, scenario, FES):
 
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -2096,7 +2096,7 @@ def future_RES_capacity(year, tech, scenario, FES):
     elif tech == "Biomass":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -2134,7 +2134,7 @@ def future_RES_capacity(year, tech, scenario, FES):
 
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -2205,7 +2205,7 @@ def plot_future_capacities(year):
     if year <= 2020:
         data_reader_writer.data_writer(start, end, time_step, year)
 
-    df_generators = pd.read_csv("LOPF_data/generators.csv", index_col=0)
+    df_generators = pd.read_csv("data/LOPF_data/generators.csv", index_col=0)
     generators_p_nom = df_generators.p_nom.groupby(df_generators.carrier).sum()
     generators_p_nom.drop("Unmet Load", inplace=True)
     try:
@@ -2228,7 +2228,7 @@ def plot_future_capacities(year):
     plt.grid(color="grey", linewidth=1, axis="both", alpha=0.5)
     plt.title("Installed capacity in year " + str(year))
     plt.tight_layout()
-    plt.savefig("../data/FES2021/Capacities Pics/" + str(year) + ".png")
+    plt.savefig("data/FES2021/Capacities Pics/" + str(year) + ".png")
 
 
 def gif_future_capacities():
@@ -2237,10 +2237,10 @@ def gif_future_capacities():
     for year in range(2021, 2050 + 1):
         plot_future_capacities(year)
         # list of filenames
-        filenames.append("../data/FES2021/Capacities Pics/" + str(year) + ".png")
+        filenames.append("data/FES2021/Capacities Pics/" + str(year) + ".png")
 
     with imageio.get_writer(
-        "../data/FES2021/Capacities Pics/FES_installed_capacities.gif",
+        "data/FES2021/Capacities Pics/FES_installed_capacities.gif",
         mode="I",
         duration=1.0,
     ) as writer:

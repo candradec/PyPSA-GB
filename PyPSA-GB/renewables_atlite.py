@@ -135,7 +135,7 @@ def onshore_wind_farm_timeseries(sites, year, name):
     # Define the cutout; this will not yet trigger any major operations
     file = "uk-" + str(year)
     time = str(year)
-    path = "../data/renewables/atlite/cutouts/" + file
+    path = "data/renewables/atlite/cutouts/" + file
     cutout = atlite.Cutout(
         path=path, module="era5", bounds=UK.unary_union.bounds, time=time
     )
@@ -210,7 +210,7 @@ def PV_timeseries(sites, year, name):
     # Define the cutout; this will not yet trigger any major operations
     file = "uk-" + str(year)
     time = str(year)
-    path = "../data/renewables/atlite/cutouts/" + file
+    path = "data/renewables/atlite/cutouts/" + file
     cutout = atlite.Cutout(
         path=path, module="era5", bounds=UK.unary_union.bounds, time=time
     )
@@ -258,7 +258,7 @@ def multiple_offshore_wind(sites, year):
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
     print(df)
 
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/"
 
     df.index.name = "name"
     df.to_csv(path + "Wind_Offshore_" + str(year) + ".csv", header=True)
@@ -279,7 +279,7 @@ def multiple_onshore_wind(sites, year):
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
     print(df)
 
-    path = "../data/renewables/atlite/outputs/Wind_Onshore/"
+    path = "data/renewables/atlite/outputs/Wind_Onshore/"
 
     df.index.name = "name"
     df.to_csv(path + "Wind_Onshore_" + str(year) + ".csv", header=True)
@@ -302,7 +302,7 @@ def multiple_PV(sites, year):
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
     print(df)
 
-    path = "../data/renewables/atlite/outputs/PV/"
+    path = "data/renewables/atlite/outputs/PV/"
 
     df.index.name = "name"
     df.to_csv(path + "PV_" + str(year) + ".csv", header=True)
@@ -323,7 +323,7 @@ def offshore_wind_pipeline_timeseries(sites, year):
         list_outputs.append(offshore_wind_farm_timeseries(sites, year, name=i))
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
 
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
 
     df.index.name = "name"
     df.to_csv(path + "wind_offshore_pipeline" + "_" + str(year) + ".csv", header=True)
@@ -336,7 +336,7 @@ def offshore_wind_future_timeseries(sites, year):
         list_outputs.append(offshore_wind_farm_timeseries(sites, year, name=i))
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
 
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
 
     df.index.name = "name"
     df.to_csv(path + "wind_offshore_future" + "_" + str(year) + ".csv", header=True)
@@ -349,7 +349,7 @@ def offshore_wind_floating_timeseries(sites, year):
         list_outputs.append(offshore_wind_farm_timeseries(sites, year, name=i))
     df = pd.concat(list_outputs, axis=1, ignore_index=False)
 
-    path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_floating/"
+    path = "data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_floating/"
 
     df.index.name = "name"
     print(df)
@@ -360,7 +360,7 @@ def offshore_pipeline_sites():
 
     # want to use PyPSA-GB data on renewable generators in different years
     # lets start with 2019
-    file = "../data/renewables/atlite/inputs/offshore_pipeline_2030.csv"
+    file = "data/renewables/atlite/inputs/offshore_pipeline_2030.csv"
     df = pd.read_csv(file)
     df["capacity"] = df["Turbine Capacity (MW)"]
     df.drop(columns=["Turbine Capacity (MW)", "No. of Turbines"], inplace=True)
@@ -373,7 +373,7 @@ def offshore_floating_sites():
 
     # want to use PyPSA-GB data on renewable generators in different years
     # lets start with 2019
-    file = "../data/renewables/future_offshore_sites/Sectoral Marine Plan 2020 - Floating.csv"
+    file = "data/renewables/future_offshore_sites/Sectoral Marine Plan 2020 - Floating.csv"
     df_plan = pd.read_csv(file, encoding="unicode_escape", index_col=0)
     df_plan.rename(
         columns={
@@ -400,7 +400,7 @@ def offshore_floating_sites():
 def offshore_historical_sites(year):
 
     file = (
-        "../data/renewables/atlite/inputs/Wind_Offshore/Wind_Offshore_"
+        "data/renewables/atlite/inputs/Wind_Offshore/Wind_Offshore_"
         + str(year)
         + ".csv"
     )
@@ -428,7 +428,7 @@ def offshore_historical_sites_dict():
 def offshore_future_sites():
 
     df_plan = pd.read_csv(
-        "../data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
+        "data/renewables/future_offshore_sites/Sectoral Marine Plan 2020.csv",
         encoding="unicode_escape",
         index_col=0,
     )
@@ -457,7 +457,7 @@ def offshore_future_sites():
 def onshore_historical_sites(year):
 
     file = (
-        "../data/renewables/atlite/inputs/Wind_Onshore/Wind_Onshore_"
+        "data/renewables/atlite/inputs/Wind_Onshore/Wind_Onshore_"
         + str(year)
         + ".csv"
     )
@@ -476,7 +476,7 @@ def onshore_historical_sites(year):
 def PV_historical_sites(year):
 
     file = (
-        "../data/renewables/atlite/inputs/Solar_Photovoltaics/Solar_Photovoltaics_"
+        "data/renewables/atlite/inputs/Solar_Photovoltaics/Solar_Photovoltaics_"
         + str(year)
         + ".csv"
     )
@@ -581,7 +581,7 @@ def plot_UK_and_data():
 
     # want to use PyPSA-GB data on renewable generators in different years
     # lets start with 2019
-    file = "../data/renewables/atlite/inputs/offshore_pipeline_2030.csv"
+    file = "data/renewables/atlite/inputs/offshore_pipeline_2030.csv"
     df = pd.read_csv(file, index_col=False)
     df["capacity"] = df["Turbine Capacity (MW)"] * df["No. of Turbines"]
     df.drop(columns=["Turbine Capacity (MW)", "No. of Turbines"], inplace=True)

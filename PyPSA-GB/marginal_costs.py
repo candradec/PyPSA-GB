@@ -40,7 +40,7 @@ def future_fuel_prices_df(FES):
 
     if FES == 2021:
         df_FES = pd.read_excel(
-            "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+            "data/FES2021/FES 2021 Data Workbook V04.xlsx",
             sheet_name="CP1",
             usecols="L:BA",
             header=8,
@@ -49,7 +49,7 @@ def future_fuel_prices_df(FES):
         )
     elif FES == 2022:
         df_FES = pd.read_excel(
-            "../data/FES2022/FES2022 Workbook V4.xlsx",
+            "data/FES2022/FES2022 Workbook V4.xlsx",
             sheet_name="CP1",
             usecols="L:BA",
             header=8,
@@ -120,7 +120,7 @@ def future_carbon_prices_df(FES):
 
     if FES == 2021:
         df_FES = pd.read_excel(
-            "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+            "data/FES2021/FES 2021 Data Workbook V04.xlsx",
             sheet_name="CP2",
             usecols="N:BC",
             header=7,
@@ -129,7 +129,7 @@ def future_carbon_prices_df(FES):
         )
     elif FES == 2022:
         df_FES = pd.read_excel(
-            "../data/FES2022/FES2022 Workbook V4.xlsx",
+            "data/FES2022/FES2022 Workbook V4.xlsx",
             sheet_name="CP2",
             usecols="N:BC",
             header=7,
@@ -175,7 +175,7 @@ def exchange_year_average():
 
 def marginal_price_dataframe(FES):
 
-    df = pd.read_excel("../data/marginal_cost_data.xlsx", sheet_name=None)
+    df = pd.read_excel("data/marginal_cost_data.xlsx", sheet_name=None)
 
     fuel_prices = fuel_prices_df(df)
     carbon_support_price = carbon_support_price_df(df)
@@ -316,7 +316,7 @@ def write_marginal_costs_series(start, end, freq, year, FES):
 
     # this will be the same for unit commitment and LOPF
     # read in the list of generators
-    df_gens = pd.read_csv("LOPF_data/generators.csv")
+    df_gens = pd.read_csv("data/LOPF_data/generators.csv")
     start_ = pd.to_datetime(start)
     end_ = pd.to_datetime(end)
     marginal_cost_df = marginal_price_dataframe(FES).loc[start_:end_]
@@ -375,7 +375,7 @@ def write_marginal_costs_series(start, end, freq, year, FES):
 
 if __name__ == "__main__":
 
-    # df = pd.read_excel('../data/marginal_cost_data.xlsx', sheet_name=None)
+    # df = pd.read_excel('data/marginal_cost_data.xlsx', sheet_name=None)
     # fuel_prices_df(df)
     # carbon_support_price_df(df)
     # EU_ETS_df(df)

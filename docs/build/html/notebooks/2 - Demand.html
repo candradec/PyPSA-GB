@@ -407,7 +407,7 @@ level and interconnectors should be added separately. This is available from 200
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_network</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/network/buses.csv&#39;</span><span class="p">)[:</span><span class="mi">29</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_network</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/network/buses.csv&#39;</span><span class="p">)[:</span><span class="mi">29</span><span class="p">]</span>
 <span class="n">lon</span> <span class="o">=</span> <span class="n">df_network</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">df_network</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
@@ -420,8 +420,8 @@ level and interconnectors should be added separately. This is available from 200
 <span class="n">sizes</span> <span class="o">=</span> <span class="n">df_load</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
 <span class="n">marker_scaler</span> <span class="o">=</span> <span class="mf">0.0001</span>
 
-<span class="n">df_lines</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/network/lines.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">df_buses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/network/buses.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_lines</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/network/lines.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df_buses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/network/buses.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">line_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_lines</span><span class="p">[</span><span class="s1">&#39;bus0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)):</span>
@@ -1066,7 +1066,7 @@ Text(0, 0.5, &#39;Load [MW]&#39;)
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_FES</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span>
-            <span class="s1">&#39;../data/FES2021/FES 2021 Data Workbook V04.xlsx&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;data/FES2021/FES 2021 Data Workbook V04.xlsx&#39;</span><span class="p">,</span>
             <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;ED1&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 <span class="n">df_FES_demand</span> <span class="o">=</span> <span class="n">df_FES</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_FES</span><span class="p">[</span><span class="s1">&#39;Data item&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;GBFES System Demand: Total&#39;</span><span class="p">]</span>
 <span class="n">scenario</span> <span class="o">=</span> <span class="s1">&#39;Leading the Way&#39;</span>

@@ -1,13 +1,16 @@
 Type,Breakdown Rate
 Coal,0.1
 CCGT,0.06
+Simil-CCGT,0.06
+Hydrogen,0.06
 Nuclear,0.1
 OCGT,0.07
+Simil-OCGT,0.06
 Biomass,0.06
 Hydro,0.08
 Wind,0.16
 Pumped storage,0.03
 Interconnector,0.2
-Englandconnector,0.2
+Englandconnector,0.36
 Weather Dependent,0.0
 Excluded,1.0

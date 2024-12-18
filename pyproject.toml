@@ -59,7 +59,7 @@ flake8 = "*"
 flake8-black = "*"
 flake8-isort = "*"
 autopep8 = "*"
-
+osgb = "*"
 
 [build-system]
 requires = ["poetry-core"]

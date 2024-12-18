@@ -86,9 +86,9 @@ def data_writer(
             exit()
 
     if networkmodel == "Reduced":
-        copy_file("../data/network/BusesBasedGBsystem", "../data")
+        copy_file("data/network/BusesBasedGBsystem", "data")
     elif networkmodel == "Zonal":
-        copy_file("../data/network/ZonesBasedGBsystem", "../data")
+        copy_file("data/network/ZonesBasedGBsystem", "data")
 
     # make sure that end time is in accordance with timestep
     if time_step == 1.0 or time_step == "H" or time_step == "1H":

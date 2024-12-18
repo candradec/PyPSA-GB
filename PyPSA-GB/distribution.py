@@ -8,13 +8,13 @@ import pandas as pd
 class Distribution(object):
 
     def __init__(self, year, scenario, networkmodel="Reduced"):
-        path = "LOPF_data/generators.csv"
+        path = "data/LOPF_data/generators.csv"
         self.df_generators = pd.read_csv(path, index_col=0)
 
-        path = "LOPF_data/storage_units.csv"
+        path = "data/LOPF_data/storage_units.csv"
         self.df_storage = pd.read_csv(path, index_col=0)
 
-        path = "LOPF_data/loads-p_set.csv"
+        path = "data/LOPF_data/loads-p_set.csv"
         self.df_loads = pd.read_csv(path, index_col=0)
 
         # path = 'LOPF_data/links.csv'
@@ -97,13 +97,13 @@ class Distribution(object):
         #     raise NameError('Invalid scenario passed to Distribution class')
 
         self.df_FES_bb = pd.read_excel(
-            "../data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="BB1"
+            "data/FES2022/FES2022 Workbook V4.xlsx", sheet_name="BB1"
         )
         self.df_id = pd.read_excel(
-            "../data/FES2022/Building Block Definitions.xlsx", index_col=0
+            "data/FES2022/Building Block Definitions.xlsx", index_col=0
         )
         self.df_gsp = pd.read_csv(
-            "../data/FES2022/GSP in Scotland.csv", encoding="cp1252"
+            "data/FES2022/GSP in Scotland.csv", encoding="cp1252"
         )
 
     def read_building_block_scotland(self, tech):
@@ -707,7 +707,7 @@ class Distribution(object):
         PV_by_bus_norm = PV_by_bus / PV_by_bus.sum()
 
         # read in the future distribution for PV
-        path = "../data/FES2021/Distributions/Solar Distribution " + scenario + ".csv"
+        path = "data/FES2021/Distributions/Solar Distribution " + scenario + ".csv"
         df_PV = pd.read_csv(path, index_col=0)
         df_PV = df_PV[df_PV.index.notnull()]
         df_PV = df_PV.loc[:, ~df_PV.columns.str.contains("^Unnamed")]
@@ -748,7 +748,7 @@ class Distribution(object):
         wind_by_bus_norm = wind_by_bus / wind_by_bus.sum()
 
         # read in the future distribution for wind
-        path = "../data/FES2021/Distributions/Wind Distribution " + scenario + ".csv"
+        path = "data/FES2021/Distributions/Wind Distribution " + scenario + ".csv"
         df_wind = pd.read_csv(path, index_col=0)
         df_wind = df_wind[df_wind.index.notnull()]
         df_wind = df_wind.loc[:, ~df_wind.columns.str.contains("^Unnamed")]
@@ -790,7 +790,7 @@ class Distribution(object):
         storage_by_bus_norm = storage_by_bus / storage_by_bus.sum()
 
         # read in the future distribution for storage
-        path = "../data/FES2021/Distributions/Storage Distribution " + scenario + ".csv"
+        path = "data/FES2021/Distributions/Storage Distribution " + scenario + ".csv"
         df_storage = pd.read_csv(path, index_col=0)
         df_storage = df_storage[df_storage.index.notnull()]
         df_storage = df_storage.loc[:, ~df_storage.columns.str.contains("^Unnamed")]

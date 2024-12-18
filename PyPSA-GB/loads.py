@@ -32,11 +32,11 @@ def read_historical_demand_data():
     # df = df1.append(frames, ignore_index=True, sort=False)
 
     # using espeni data set
-    file = "../data/demand/espeni.csv"
+    file = "data/demand/espeni.csv"
     df = pd.read_csv(file)
 
     dti = pd.date_range(
-        start="2008-11-05 22:00:00", end="2021-06-06 23:30:00", freq="0.5H"
+        start="2008-11-05 22:00:00", end="2021-06-06 23:30:00", freq="0.5h"
     )
     df = df.set_index(dti)
     df = df[["POWER_ESPENI_MW"]]
@@ -82,7 +82,7 @@ def read_future_profile_data():
     )
     df_eload.rename(columns={"eLOAD Model (2050).2": "eLOAD"}, inplace=True)
     dti = pd.date_range(
-        start="2050-01-01 00:00:00", end="2050-12-31 23:00:00", freq="H"
+        start="2050-01-01 00:00:00", end="2050-12-31 23:00:00", freq="h"
     )
     df_eload = df_eload.set_index(dti)
     # resample to half hour frequency
@@ -117,7 +117,7 @@ def write_loads(year, networkmodel="Reduced"):
     df = pd.DataFrame(data=data, index=[0])
     df.to_csv("UC_data/loads.csv", index=False, header=True)
 
-    df_buses = pd.read_csv("LOPF_data/buses.csv")
+    df_buses = pd.read_csv("data/LOPF_data/buses.csv")
     df_buses = df_buses.drop(columns=["v_nom", "carrier", "x", "y"])
     df_buses["bus"] = df_buses["name"]
     df_buses = df_buses.set_index("name")
@@ -212,7 +212,7 @@ def write_loads_p_set(
 
     dti = pd.date_range(start=start, end=end, freq=freq)
 
-    df_distribution = pd.read_csv("../data/demand/Demand_Distribution.csv", index_col=0)
+    df_distribution = pd.read_csv("data/demand/Demand_Distribution.csv", index_col=0)
     df_distribution = df_distribution.loc[
         :, ~df_distribution.columns.str.contains("^Unnamed")
     ]
@@ -220,7 +220,7 @@ def write_loads_p_set(
 
     if networkmodel == "Reduced":
         df_distribution = pd.read_csv(
-            "../data/demand/Demand_Distribution.csv", index_col=0
+            "data/demand/Demand_Distribution.csv", index_col=0
         )
         df_distribution = df_distribution.loc[
             :, ~df_distribution.columns.str.contains("^Unnamed")
@@ -228,7 +228,7 @@ def write_loads_p_set(
         df_distribution.dropna(inplace=True)
     elif networkmodel == "Zonal":
         df_distribution = pd.read_csv(
-            "../data/demand/Demand_Distribution_Zonal.csv", index_col=0
+            "data/demand/Demand_Distribution_Zonal.csv", index_col=0
         )
 
     # for historical years using the 2020 FES distribution data
@@ -271,14 +271,14 @@ def write_loads_p_set(
             scenario = "Leading the Way"
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ED1",
                 header=4,
                 dtype=str,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ED1",
                 header=4,
                 dtype=str,
@@ -395,25 +395,25 @@ def read_regional_breakdown_load(scenario, year, networkmodel):
 
     if scenario == "Leading the Way":
         df_regional = pd.read_excel(
-            "../data/FES2022/FES22_regional_peak_load_leading_the_way.xlsx",
+            "data/FES2022/FES22_regional_peak_load_leading_the_way.xlsx",
             sheet_name=str(year),
             header=5,
         )
     elif scenario == "Consumer Transformation":
         df_regional = pd.read_excel(
-            "../data/FES2022/FES22_regional_peak_load_consumer_transformation.xlsx",
+            "data/FES2022/FES22_regional_peak_load_consumer_transformation.xlsx",
             sheet_name=str(year),
             header=5,
         )
     elif scenario == "System Transformation":
         df_regional = pd.read_excel(
-            "../data/FES2022/FES22_regional_peak_load_system_transformation.xlsx",
+            "data/FES2022/FES22_regional_peak_load_system_transformation.xlsx",
             sheet_name=str(year),
             header=5,
         )
     elif scenario == "Falling Short":
         df_regional = pd.read_excel(
-            "../data/FES2022/FES22_regional_peak_load_falling_short.xlsx",
+            "data/FES2022/FES22_regional_peak_load_falling_short.xlsx",
             sheet_name=str(year),
             header=5,
         )
@@ -426,7 +426,7 @@ def read_regional_breakdown_load(scenario, year, networkmodel):
     df_regional = df_regional.loc[~(df_regional == 0).all(axis=1)]
 
     df_gsp_data = pd.read_csv(
-        "../data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
+        "data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
     )
     df_gsp_data = df_gsp_data[["Latitude", "Longitude"]]
     df_gsp_data.rename(columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
@@ -458,7 +458,7 @@ def distribution_zonal_loads():
         dic = read_regional_breakdown_load(scenario, year, networkmodel="Zonal")
         data[year] = pd.Series(data=dic.values(), index=dic.keys(), name=year)
     df = pd.DataFrame(data)
-    df.to_csv("../data/demand/Demand_Distribution_Zonal.csv", header=True)
+    df.to_csv("data/demand/Demand_Distribution_Zonal.csv", header=True)
 
 
 if __name__ == "__main__":

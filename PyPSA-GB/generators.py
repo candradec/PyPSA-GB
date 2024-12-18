@@ -26,7 +26,7 @@ def read_power_stations_data(year):
 
     # want to read in the conventional power generators from
     # the data prepared from DUKES
-    file = "../data/power stations/power_stations_locations_" + str(year) + ".csv"
+    file = "data/power stations/power_stations_locations_" + str(year) + ".csv"
     # read the csv
     df = pd.read_csv(file, encoding="unicode_escape")
     # fix the formatting to have each element be a list of
@@ -49,7 +49,7 @@ def read_generator_data_by_fuel():
         generator data by fuel
     """
 
-    file = "../data/generator_data_by_fuel.csv"
+    file = "data/generator_data_by_fuel.csv"
     df = pd.read_csv(file)
     df = df.set_index("fuel")
     return df
@@ -108,7 +108,7 @@ def write_generators(time_step, year, networkmodel=True):
 
     # corrections factors for RES generators: Onshore, Offshore, PV
     df_correction = pd.read_csv(
-        "../data/renewables/atlite/RES_correction_factors.csv", index_col=0
+        "data/renewables/atlite/RES_correction_factors.csv", index_col=0
     )
 
     # read in the renewable generators
@@ -147,7 +147,7 @@ def write_generators(time_step, year, networkmodel=True):
 
     # add in future sites for future scenarios
     if year > 2020:
-        path = "../data/renewables/future_offshore_sites/"
+        path = "data/renewables/future_offshore_sites/"
         file1 = "offshore_pipeline.csv"
         df_pipeline = pd.read_csv(path + file1, encoding="unicode_escape")
         df_pipeline.drop(
@@ -784,7 +784,7 @@ def generator_additional_data(df, time_step):
 
 def future_coal_p_nom(year):
     # read in phase out of coal dates
-    file = "../data/power stations/coal_phase_out_dates.csv"
+    file = "data/power stations/coal_phase_out_dates.csv"
     df = pd.read_csv(file, index_col=1)
     df.index = pd.to_datetime(df.index, format="%d/%m/%Y")
     end_date = str(year) + "-01-01"
@@ -794,9 +794,9 @@ def future_coal_p_nom(year):
     pp_to_remove = pp_to_remove[pp_to_remove != "West Burton"]
 
     # get generators dataframe with p_noms to be scaled
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
 
     # error occurs because deleting PV farm with Ratcliffe in name
@@ -840,11 +840,11 @@ def future_gas_p_nom(year, scenario, tech, FES):
 
     if tech == "OCGT" or tech == "CCGT":
         # get generators dataframe with p_noms to be scaled
-        path = "LOPF_data/generators.csv"
+        path = "data/LOPF_data/generators.csv"
         generators = pd.read_csv(path, index_col=0)
         gen_tech = generators.loc[generators["type"] == tech]
 
-        path_UC = "UC_data/generators.csv"
+        path_UC = "data/UC_data/generators.csv"
         generators_UC = pd.read_csv(path_UC, index_col=0)
         gen_tech_UC = generators_UC.loc[generators_UC["type"] == tech]
 
@@ -878,7 +878,7 @@ def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
     elif networkmodel == "Zonal":
         from allocate_to_zone import map_to_zone as map_to
     # read in phase out of nuclear dates
-    file = "../data/power stations/nuclear_phase_out_dates.csv"
+    file = "data/power stations/nuclear_phase_out_dates.csv"
     df = pd.read_csv(file, index_col=1)
     df.index = pd.to_datetime(df.index, format="%d/%m/%Y")
     end_date = str(year) + "/01/01"
@@ -886,9 +886,9 @@ def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
     pp_to_remove = filtered_df.name.values
 
     # get generators dataframe with p_noms to be scaled
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     # print(generators.loc[generators['carrier'] == 'Nuclear'])
     for i in range(len(pp_to_remove)):
@@ -900,7 +900,7 @@ def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
     # print(generators.loc[generators['carrier'] == 'Nuclear'])
 
     # read in new nuclear power plant data
-    file = "../data/power stations/nuclear_new_dates.csv"
+    file = "data/power stations/nuclear_new_dates.csv"
     df = pd.read_csv(file, index_col=1)
     df.index = pd.to_datetime(df.index, infer_datetime_format=True)
     to_date = str(year) + "-01-01"
@@ -947,11 +947,11 @@ def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
         tech_cap_FES = future_capacities_dict["tech_cap_FES"]
 
         # get generators dataframe with p_noms to be scaled
-        path = "LOPF_data/generators.csv"
+        path = "data/LOPF_data/generators.csv"
         generators3 = pd.read_csv(path, index_col=0)
         gen_tech = generators3.loc[generators3["carrier"] == tech]
 
-        path_UC = "UC_data/generators.csv"
+        path_UC = "data/UC_data/generators.csv"
         generators_UC3 = pd.read_csv(path_UC, index_col=0)
         gen_tech_UC = generators_UC3.loc[generators_UC3["carrier"] == tech]
 
@@ -988,11 +988,11 @@ def future_oil_p_nom(year, scenario, FES):
     tech_cap_FES = future_capacities_dict["tech_cap_FES"]
 
     # get generators dataframe with p_noms to be scaled
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["carrier"] == tech]
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["carrier"] == tech]
 
@@ -1029,11 +1029,11 @@ def future_waste_p_nom(year, scenario, FES):
 
     tech = "EfW Incineration"
     # get generators dataframe with p_noms to be scaled
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["carrier"] == tech]
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["carrier"] == tech]
 
@@ -1083,11 +1083,11 @@ def future_gas_CCS(year, scenario, FES):
     tech_ = "CCGT"
     # get CCGT generators as they are in year
     # need to ensure doing this function before scaling gas
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["type"] == tech_]
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["type"] == tech_]
 
@@ -1140,11 +1140,11 @@ def future_biomass_CCS(year, scenario, FES):
     tech_ = "CCGT"
     # get CCGT generators as they are in year
     # need to ensure doing this function before scaling gas
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["type"] == tech_]
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["type"] == tech_]
 
@@ -1194,11 +1194,11 @@ def future_hydrogen(year, scenario, FES):
     tech_ = "CCGT"
     # get CCGT generators as they are in year
     # need to ensure doing this function before scaling gas
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     generators = pd.read_csv(path, index_col=0)
     gen_tech = generators.loc[generators["type"] == tech_]
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     generators_UC = pd.read_csv(path_UC, index_col=0)
     gen_tech_UC = generators_UC.loc[generators_UC["type"] == tech_]
 
@@ -1257,14 +1257,14 @@ def future_capacity(year, tech, scenario, FES):
     if tech == "CCGT":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1308,14 +1308,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "OCGT":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1360,14 +1360,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "Nuclear":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1383,14 +1383,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "Oil":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1435,14 +1435,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "Waste":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1487,14 +1487,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "CCS Gas":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1515,14 +1515,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "CCS Biomass":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1544,14 +1544,14 @@ def future_capacity(year, tech, scenario, FES):
     elif tech == "Hydrogen":
         if FES == 2021:
             df_FES = pd.read_excel(
-                "../data/FES2021/FES 2021 Data Workbook V04.xlsx",
+                "data/FES2021/FES 2021 Data Workbook V04.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
             )
         elif FES == 2022:
             df_FES = pd.read_excel(
-                "../data/FES2022/FES2022 Workbook V4.xlsx",
+                "data/FES2022/FES2022 Workbook V4.xlsx",
                 sheet_name="ES1",
                 header=9,
                 index_col=1,
@@ -1910,8 +1910,8 @@ def future_p_nom(year, time_step, scenario, FES, networkmodel="Reduced"):
     renewables.future_RES_scale_p_nom(year, "Hydro", scenario, FES)
 
     # ensure all generator data is added
-    df_UC = pd.read_csv("UC_data/generators.csv", index_col=0)
-    df_LOPF = pd.read_csv("LOPF_data/generators.csv", index_col=0)
+    df_UC = pd.read_csv("data/UC_data/generators.csv", index_col=0)
+    df_LOPF = pd.read_csv("data/LOPF_data/generators.csv", index_col=0)
 
     # run additional data for both UC and LOPF
     df_UC = generator_additional_data(df_UC, time_step)
@@ -1948,7 +1948,7 @@ def unmet_load():
     # ADD NEW GENERATOR FOR UNMET LOAD
 
     # get generators
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     df_LOPF = pd.read_csv(path, index_col=0)
 
     # # check names are unique for LOPF
@@ -1959,7 +1959,7 @@ def unmet_load():
     #         df_LOPF['Unnamed: 0'][duplicateDFRow.index.values[i]] + '.1')
     #     print(df_LOPF['Unnamed: 0'][duplicateDFRow.index.values[i]])
 
-    path_UC = "UC_data/generators.csv"
+    path_UC = "data/UC_data/generators.csv"
     df_UC = pd.read_csv(path_UC, index_col=0)
 
     # add one to the UC problem
@@ -1987,7 +1987,7 @@ def unmet_load():
     # for LOPF need to add to each bus
 
     # read in all buses with loads
-    df_buses = pd.read_csv("LOPF_data/loads.csv", index_col=0)
+    df_buses = pd.read_csv("data/LOPF_data/loads.csv", index_col=0)
     # add to each bus
     for bus in df_buses.bus.values:
         dic_unmet = {
@@ -2044,10 +2044,10 @@ def unmet_load():
 def merge_generation_buses(year):
 
     # get generators
-    path = "LOPF_data/generators.csv"
+    path = "data/LOPF_data/generators.csv"
     df_gen = pd.read_csv(path, index_col=0)
 
-    path = "LOPF_data/generators-p_max_pu.csv"
+    path = "data/LOPF_data/generators-p_max_pu.csv"
     df_gen_p = pd.read_csv(path, index_col=0)
 
     carriers = [
@@ -2122,12 +2122,12 @@ def merge_generation_buses(year):
         # check if generators-p_min_pu exists and delete if so
         # used in historical simulations but not wanted in future sims
         try:
-            file = "LOPF_data/generators-p_min_pu.csv"
+            file = "data/LOPF_data/generators-p_min_pu.csv"
             os.remove(file)
         except Exception:
             pass
         try:
-            file = "UC_data/generators-p_min_pu.csv"
+            file = "data/UC_data/generators-p_min_pu.csv"
             os.remove(file)
         except Exception:
             pass

@@ -28,7 +28,7 @@ def load_zone(json_file):
 
 
 def map_to_zone(df, subzone=None, warm=False):
-    file_path = "../data/network/ZonesBasedGBsystem/zone/zones_json.geojson"
+    file_path = "data/network/ZonesBasedGBsystem/zone/zones_json.geojson"
     json_file = json.loads(open(file_path).read())["features"]
     zones_list = load_zone(json_file)[:20]
 
@@ -101,7 +101,7 @@ def plot_polygon(ax, poly, **kwargs):
 
 
 if __name__ == "__main__":
-    # file_path = '../data/zone/zones_json.geojson'
+    # file_path = 'data/zone/zones_json.geojson'
     # json_file = json.loads(open(file_path).read())
     # zones_list = load_zone(json_file)
 

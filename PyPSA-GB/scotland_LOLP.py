@@ -18,7 +18,7 @@ plt.style.use("ggplot")
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 
-plt.style.use("plot_style.txt")
+#plt.style.use("plot_style.txt")
 
 
 def get_rate(
@@ -71,15 +71,15 @@ def convert_type(name, carrier, conversion_dict, power_stations):
 def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=None):
     if year > 2020:
         year = year_baseline
-    file = "../data/power stations/power_stations_locations_" + str(year) + ".csv"
+    file = "data/power stations/power_stations_locations_" + str(year) + ".csv"
     power_stations = pd.read_csv(file, encoding="unicode_escape")
 
-    bd_conversion_csv = pd.read_csv("../data/LOLE/bd_conversion_type.csv", index_col=0)
+    bd_conversion_csv = pd.read_csv("data/LOLE/bd_conversion_type.csv", index_col=0)
     bd_conversion_dict = bd_conversion_csv.to_dict()["1"]
 
-    breakdown_rate = pd.read_csv("../data/LOLE/breakdown_rate.csv", index_col=0)
+    breakdown_rate = pd.read_csv("data/LOLE/breakdown_rate.csv", index_col=0)
     breakdowwn_rate_battery = pd.read_csv(
-        "../data/LOLE/breakdowwn_rate_battery.csv", index_col=0
+        "data/LOLE/breakdowwn_rate_battery.csv", index_col=0
     )
 
     if (failures_type is not None) and (failures_type is not None):
@@ -200,13 +200,13 @@ def LOLP(network, year, year_baseline=None, failures_type=None, failures_rate=No
 def Margin(network, pd_stations, year, system_reserve_requirment, year_baseline=None):
     if year > 2020:
         year = year_baseline
-    file = "../data/power stations/power_stations_locations_" + str(year) + ".csv"
+    file = "data/power stations/power_stations_locations_" + str(year) + ".csv"
     power_stations = pd.read_csv(file, encoding="unicode_escape")
 
-    de_conversion_csv = pd.read_csv("../data/LOLE/de_conversion_type.csv", index_col=0)
+    de_conversion_csv = pd.read_csv("data/LOLE/de_conversion_type.csv", index_col=0)
     de_conversion_dict = de_conversion_csv.to_dict()["1"]
 
-    de_rate = pd.read_csv("../data/LOLE/de_rate.csv", index_col=0)
+    de_rate = pd.read_csv("data/LOLE/de_rate.csv", index_col=0)
     de_rate = de_rate.to_dict()["De-Rate"]
 
     generators_name_list = network.generators.index.tolist()
@@ -545,13 +545,13 @@ def rate_table(nuclear=True):
     de_csv = pd.DataFrame.from_dict(de_rate, orient="index", columns=["De-Rate"])
     de_csv = de_csv.reset_index().rename(columns={"index": "Type"})
 
-    if not os.path.exists("../data/LOLE"):
-        os.makedirs("../data/LOLE")
-    bd_conversion_type_csv.to_csv("../data/LOLE/bd_conversion_type.csv", index=False)
-    br_csv.to_csv("../data/LOLE/breakdown_rate.csv", index=False)
-    brb_csv.to_csv("../data/LOLE/breakdowwn_rate_battery.csv", index=False)
-    de_conversion_type_csv.to_csv("../data/LOLE/de_conversion_type.csv", index=False)
-    de_csv.to_csv("../data/LOLE/de_rate.csv", index=False)
+    if not os.path.exists("data/LOLE"):
+        os.makedirs("data/LOLE")
+    bd_conversion_type_csv.to_csv("data/LOLE/bd_conversion_type.csv", index=False)
+    br_csv.to_csv("data/LOLE/breakdown_rate.csv", index=False)
+    brb_csv.to_csv("data/LOLE/breakdowwn_rate_battery.csv", index=False)
+    de_conversion_type_csv.to_csv("data/LOLE/de_conversion_type.csv", index=False)
+    de_csv.to_csv("data/LOLE/de_rate.csv", index=False)
 
 
 def B6_scaling(year, file_path):
@@ -583,7 +583,7 @@ def B6_scaling(year, file_path):
 
 
 def loads_leap_year():
-    pd_load = pd.read_csv("LOPF_data/loads-p_set.csv", index_col=0)
+    pd_load = pd.read_csv("data/LOPF_data/loads-p_set.csv", index_col=0)
 
     pd_load.index = pd.to_datetime(pd_load.index)
 
@@ -626,8 +626,8 @@ def main(
             scale_to_peak=True,
         )
     except:
-        shutil.rmtree("LOPF_data")
-        os.mkdir("LOPF_data")
+        shutil.rmtree("data/LOPF_data")
+        os.mkdir("data/LOPF_data")
         data_reader_writer.data_writer(
             start,
             end,
@@ -641,7 +641,7 @@ def main(
             scale_to_peak=True,
         )
 
-    B6_scaling(year, "LOPF_data/lines.csv")
+    B6_scaling(year, "data/LOPF_data/lines.csv")
 
     if year % 4 == 0:
         print("add 29/02/" + str(year))
@@ -742,12 +742,12 @@ def main(
     print("Net demand:")
     print(pd.Series(net_demand).describe())
 
-    if os.path.exists("../data/LOLE/peak_demand.csv"):
-        pd_peak_demand = pd.read_csv("../data/LOLE/peak_demand.csv", index_col=0)
+    if os.path.exists("data/LOLE/peak_demand.csv"):
+        pd_peak_demand = pd.read_csv("data/LOLE/peak_demand.csv", index_col=0)
     else:
         pd_peak_demand = pd.DataFrame(columns=["demand"])
     pd_peak_demand.loc[year] = {"demand": network.loads_t.p_set.sum(axis=1).max()}
-    pd_peak_demand.to_csv("../data/LOLE/peak_demand.csv")
+    pd_peak_demand.to_csv("data/LOLE/peak_demand.csv")
 
     generators_p_nom_scotland = (
         pd.concat([network.generators, network.storage_units])
@@ -762,7 +762,7 @@ def main(
     )
     print(generators_p_nom_scotland)
     generators_p_nom_scotland.to_csv(
-        "../data/LOLE/generators_p_nom_"
+        "data/LOLE/generators_p_nom_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
@@ -777,7 +777,7 @@ def main(
     # plt.title('Scotland installed generation capacity in year ' + str(year))
     plt.tight_layout()
     plt.savefig(
-        "../data/LOLE/Installed_capacity_"
+        "data/LOLE/Installed_capacity_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
@@ -802,7 +802,7 @@ def main(
     )
     print(pd_de_rated_capacity)
     pd_de_rated_capacity.to_csv(
-        "../data/LOLE/de_rated_capacity_"
+        "data/LOLE/de_rated_capacity_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
@@ -817,7 +817,7 @@ def main(
     # plt.title('Scotland installed de-rate capacity in year ' + str(year))
     plt.tight_layout()
     plt.savefig(
-        "../data/LOLE/De-rate_capacity_"
+        "data/LOLE/De-rate_capacity_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
@@ -835,7 +835,7 @@ def main(
     pd_cdf["xx"] = xx
     pd_cdf["yy"] = cdf
     pd_cdf.to_csv(
-        "../data/LOLE/cdf_" + str(year) + "_" + re.sub("[^A-Z]", "", scenario) + ".csv"
+        "data/LOLE/cdf_" + str(year) + "_" + re.sub("[^A-Z]", "", scenario) + ".csv"
     )
 
     # plt.plot(xx,yy)
@@ -1688,28 +1688,28 @@ def main(
         rate_table()
 
     output_lolp.to_csv(
-        "../data/LOLE/lolp_lole_"
+        "data/LOLE/lolp_lole_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
         + ".csv"
     )
     output_lolp_self.to_csv(
-        "../data/LOLE/self_lolp_lole_"
+        "data/LOLE/self_lolp_lole_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
         + ".csv"
     )
     output_margin.to_csv(
-        "../data/LOLE/margin_demand_"
+        "data/LOLE/margin_demand_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
         + ".csv"
     )
     lole_loop.dropna(axis=1, how="all").T.to_csv(
-        "../data/LOLE/lole_loop_"
+        "data/LOLE/lole_loop_"
         + str(year)
         + "_"
         + re.sub("[^A-Z]", "", scenario)
@@ -1724,7 +1724,7 @@ def main_plot(scenario, year_list):
     pd_de_rate = pd.DataFrame()
     for year in year_list:
         pd_lolp = pd.read_csv(
-            "../data/LOLE/lolp_lole_"
+            "data/LOLE/lolp_lole_"
             + str(year)
             + "_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1735,7 +1735,7 @@ def main_plot(scenario, year_list):
         pd_plot = pd.concat([pd_plot, pd_lolp])
 
         pd_lolp_self = pd.read_csv(
-            "../data/LOLE/self_lolp_lole_"
+            "data/LOLE/self_lolp_lole_"
             + str(year)
             + "_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1748,7 +1748,7 @@ def main_plot(scenario, year_list):
         pd_plot_self = pd.concat([pd_plot_self, pd_lolp_self])
 
         pd_margin = pd.read_csv(
-            "../data/LOLE/margin_demand_"
+            "data/LOLE/margin_demand_"
             + str(year)
             + "_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1763,7 +1763,7 @@ def main_plot(scenario, year_list):
             [
                 pd_de_rate,
                 pd.read_csv(
-                    "../data/LOLE/de_rated_capacity_"
+                    "data/LOLE/de_rated_capacity_"
                     + str(year)
                     + "_"
                     + re.sub("[^A-Z]", "", scenario)
@@ -1794,7 +1794,7 @@ def main_plot(scenario, year_list):
             plt.xticks(year_list)
             plt.xlim(min(year_list) - 5, max(year_list) + 5)
             plt.savefig(
-                "../data/LOLE/"
+                "data/LOLE/"
                 + case
                 + "_"
                 + col
@@ -1829,7 +1829,7 @@ def main_plot(scenario, year_list):
         plt.grid(True)
         plt.legend()
         plt.savefig(
-            "../data/LOLE/all_scenario_"
+            "data/LOLE/all_scenario_"
             + col
             + "_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1865,7 +1865,7 @@ def main_plot(scenario, year_list):
         plt.grid(True)
         plt.legend()
         plt.savefig(
-            "../data/LOLE/all_scenario_"
+            "data/LOLE/all_scenario_"
             + col
             + "_l_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1888,7 +1888,7 @@ def main_plot(scenario, year_list):
         plt.xlim(min(year_list) - 5, max(year_list) + 5)
         plt.legend()
         plt.savefig(
-            "../data/LOLE/self_all_scenario"
+            "data/LOLE/self_all_scenario"
             + "_"
             + col
             + "_"
@@ -1906,7 +1906,7 @@ def main_plot(scenario, year_list):
     plt.xticks(year_list)
     plt.xlim(min(year_list) - 2, max(year_list) + 2)
     plt.gca().yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1, decimals=0))
-    plt.savefig("../data/LOLE/margin_demand.png", dpi=600)
+    plt.savefig("data/LOLE/margin_demand.png", dpi=600)
     plt.show()
 
     plt.figure()
@@ -1933,7 +1933,7 @@ def main_plot(scenario, year_list):
         ncol=5,
     )
     plt.show()
-    pd_de_rate.to_csv("../data/LOLE/combi_de-rated_cap_types.csv")
+    pd_de_rate.to_csv("data/LOLE/combi_de-rated_cap_types.csv")
 
 
 def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
@@ -1941,7 +1941,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
     pd_plot = pd.DataFrame(index=year_list)
     for year in year_list:
         lole_loop = pd.read_csv(
-            "../data/LOLE/lole_loop_"
+            "data/LOLE/lole_loop_"
             + str(year)
             + "_"
             + re.sub("[^A-Z]", "", scenario)
@@ -1982,7 +1982,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
         ):
             year = year_list[_]
             pd_cdf = pd.read_csv(
-                "../data/LOLE/cdf_"
+                "data/LOLE/cdf_"
                 + str(year)
                 + "_"
                 + re.sub("[^A-Z]", "", scenario)
@@ -1992,7 +1992,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
             xx = pd_cdf["xx"]
             yy = pd_cdf["yy"]
             net_demand = pd.read_csv(
-                "../data/LOLE/margin_demand_"
+                "data/LOLE/margin_demand_"
                 + str(year)
                 + "_"
                 + re.sub("[^A-Z]", "", scenario)
@@ -2017,7 +2017,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
         ):
             year = year_list[_]
             pd_cdf = pd.read_csv(
-                "../data/LOLE/cdf_"
+                "data/LOLE/cdf_"
                 + str(year)
                 + "_"
                 + re.sub("[^A-Z]", "", scenario)
@@ -2027,7 +2027,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
             xx = pd_cdf["xx"]
             yy = pd_cdf["yy"]
             net_demand = pd.read_csv(
-                "../data/LOLE/margin_demand_"
+                "data/LOLE/margin_demand_"
                 + str(year)
                 + "_"
                 + re.sub("[^A-Z]", "", scenario)
@@ -2050,7 +2050,7 @@ def self_sufficient_plot(scenario, year_list, system_reserve_requirment=1200):
     plt.xlim(min(year_list) - 5, max(year_list) + 5)
     plt.grid()
     plt.legend()
-    plt.savefig("../data/LOLE/LOLE self-suffient.png", dpi=600)
+    plt.savefig("data/LOLE/LOLE self-suffient.png", dpi=600)
     plt.show()
 
 
@@ -2068,7 +2068,7 @@ if __name__ == "__main__":
 
     st = time.time()
 
-    # # # main(2020, scenario, demand_dataset='historical')
+    main(2020, scenario, demand_dataset='historical')
     # main(2021, scenario)
     # main(2025, scenario)
     # # # # main(2025, scenario, nuclear=False)

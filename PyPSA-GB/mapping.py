@@ -65,13 +65,13 @@ def generator_map_plotter(tech, color, marker_scaler, year):
         title="Installed Capacity (MWelec)",
         scatterpoints=1,
     )
-    plt.savefig("../data/renewables/" + str(year) + "_" + tech + ".png")
+    plt.savefig("data/renewables/" + str(year) + "_" + tech + ".png")
     # plt.show()
 
 
 def network_plotter():
 
-    df_network = pd.read_csv("../data/network/buses.csv")[:99]
+    df_network = pd.read_csv("data/network/buses.csv")[:99]
     lon = df_network["x"].values
     lat = df_network["y"].values
     coordinates = np.zeros(shape=(len(lon), 2))
@@ -84,10 +84,10 @@ def network_plotter():
     # sizes = df_load.sum(axis=0).values
     # marker_scaler = 0.0025
 
-    df_lines = pd.read_csv("../data/network/lines.csv", index_col=0)
+    df_lines = pd.read_csv("data/network/lines.csv", index_col=0)
     print(df_lines)
 
-    df_buses = pd.read_csv("../data/network/buses.csv", index_col=0)
+    df_buses = pd.read_csv("data/network/buses.csv", index_col=0)
     print(df_buses[:29].index)
     # print(df_buses['x']['Beauly'])
 
@@ -140,21 +140,21 @@ def gif_maker(tech):
 
     # tech_ = tech.replace(" ", "_")
 
-    file1 = "../data/renewables/" + "/2011" + "_" + tech + ".png"
-    file2 = "../data/renewables/" + "/2012" + "_" + tech + ".png"
-    file3 = "../data/renewables/" + "/2013" + "_" + tech + ".png"
-    file4 = "../data/renewables/" + "/2014" + "_" + tech + ".png"
-    file5 = "../data/renewables/" + "/2015" + "_" + tech + ".png"
-    file6 = "../data/renewables/" + "/2016" + "_" + tech + ".png"
-    file7 = "../data/renewables/" + "/2017" + "_" + tech + ".png"
-    file8 = "../data/renewables/" + "/2018" + "_" + tech + ".png"
-    file9 = "../data/renewables/" + "/2019" + "_" + tech + ".png"
-    file10 = "../data/renewables/" + "/2020" + "_" + tech + ".png"
+    file1 = "data/renewables/" + "/2011" + "_" + tech + ".png"
+    file2 = "data/renewables/" + "/2012" + "_" + tech + ".png"
+    file3 = "data/renewables/" + "/2013" + "_" + tech + ".png"
+    file4 = "data/renewables/" + "/2014" + "_" + tech + ".png"
+    file5 = "data/renewables/" + "/2015" + "_" + tech + ".png"
+    file6 = "data/renewables/" + "/2016" + "_" + tech + ".png"
+    file7 = "data/renewables/" + "/2017" + "_" + tech + ".png"
+    file8 = "data/renewables/" + "/2018" + "_" + tech + ".png"
+    file9 = "data/renewables/" + "/2019" + "_" + tech + ".png"
+    file10 = "data/renewables/" + "/2020" + "_" + tech + ".png"
 
     filenames = [file1, file2, file3, file4, file5, file6, file7, file8, file9, file10]
 
     with imageio.get_writer(
-        "../data/renewables/" + tech + ".gif", mode="I", duration=1.0
+        "data/renewables/" + tech + ".gif", mode="I", duration=1.0
     ) as writer:
         for filename in filenames:
             image = imageio.imread(filename)
