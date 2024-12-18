@@ -8,11 +8,11 @@ def write_lines(networkmodel):
     if networkmodel == "Reduced":
         file = "data/network/BusesBasedGBsystem/network/lines.csv"
         df = pd.read_csv(file)
-        df.to_csv("LOPF_data/lines.csv", index=False, header=True)
+        df.to_csv("data/LOPF_data/lines.csv", index=False, header=True)
     elif networkmodel == "Zonal":
         file = "data/network/ZonesBasedGBsystem/network/links.csv"
         df = pd.read_csv(file)
-        df.to_csv("LOPF_data/links.csv", index=False, header=True)
+        df.to_csv("data/LOPF_data/links.csv", index=False, header=True)
 
 
 def zone_postprocess_generators():
@@ -22,7 +22,7 @@ def zone_postprocess_generators():
     df_buses["zone"] = map_to_zone(df_buses, warm=False)
     bus_zone = df_buses.set_index(["name"])["zone"].to_dict()
     df_generators["bus"].replace(bus_zone, inplace=True)
-    df_generators.to_csv("LOPF_data/generators.csv", index=True, header=True)
+    df_generators.to_csv("data/LOPF_data/generators.csv", index=True, header=True)
 
 
 def zone_postprocess_lines_links():

@@ -218,7 +218,7 @@ def rewrite_generators_for_marine(year, tech, scenario, networkmodel="Reduced"):
 
     # save the new dataframe
     # note NOT included for Unit Committment data
-    df_generators.to_csv("LOPF_data/generators.csv", header=True)
+    df_generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def check_consistency_with_p_max_pu():

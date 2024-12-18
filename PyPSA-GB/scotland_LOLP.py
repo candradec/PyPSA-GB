@@ -593,7 +593,7 @@ def loads_leap_year():
     pd_load_3 = pd_load[pd_load.index.month > 2]
     pd_load_new = pd.concat([pd_load_1, pd_load_2, pd_load_3])
 
-    pd_load_new.to_csv("LOPF_data/loads-p_set.csv")
+    pd_load_new.to_csv("data/LOPF_data/loads-p_set.csv")
 
 
 def main(

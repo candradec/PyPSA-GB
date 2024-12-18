@@ -115,13 +115,13 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
             df.loc[:, "p_nom"] * df.loc[:, "max_hours"]
         )
         df_UC = df.drop(columns=["x", "y"])
-        df_UC.to_csv("UC_data/storage_units.csv", index=False, header=True)
+        df_UC.to_csv("data/UC_data/storage_units.csv", index=False, header=True)
 
         # for the LOPF want to map the storage units to the closest bus
         df_LOPF = df.drop(columns=["x", "y", "bus"])
         df_LOPF["bus"] = map_to(df)
 
-        df_LOPF.to_csv("LOPF_data/storage_units.csv", index=False, header=True)
+        df_LOPF.to_csv("data/LOPF_data/storage_units.csv", index=False, header=True)
 
     elif year >= 2021:
         df_future_storage = future_storage(FES)
@@ -301,12 +301,12 @@ def write_storage_units(year, scenario=None, FES=None, networkmodel="Reduced"):
             df_storage.loc[:, "p_nom"] * df_storage.loc[:, "max_hours"]
         )
         df_UC = df_storage.drop(columns=["x", "y"])
-        df_UC.to_csv("UC_data/storage_units.csv", index=True, header=True)
+        df_UC.to_csv("data/UC_data/storage_units.csv", index=True, header=True)
 
         # for the LOPF want to map the storage units to the closest bus
         df_LOPF = df_storage.drop(columns=["x", "y", "bus"])
         df_LOPF["bus"] = map_to(df_storage)
-        df_LOPF.to_csv("LOPF_data/storage_units.csv", index=True, header=True)
+        df_LOPF.to_csv("data/LOPF_data/storage_units.csv", index=True, header=True)
 
     return df_LOPF
 

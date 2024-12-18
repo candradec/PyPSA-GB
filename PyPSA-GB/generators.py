@@ -449,8 +449,8 @@ def write_generators(time_step, year, networkmodel=True):
         # print(df_LOPF['name'][duplicateDFRow.index.values[i]])
 
     # save the dataframes to csv
-    df_UC.to_csv("UC_data/generators.csv", index=False, header=True)
-    df_LOPF.to_csv("LOPF_data/generators.csv", index=False, header=True)
+    df_UC.to_csv("data/UC_data/generators.csv", index=False, header=True)
+    df_LOPF.to_csv("data/LOPF_data/generators.csv", index=False, header=True)
 
 
 def generator_additional_data(df, time_step):
@@ -828,8 +828,8 @@ def future_coal_p_nom(year):
     if year > 2022:
         generators["p_nom"]["West Burton"] = 0
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_gas_p_nom(year, scenario, tech, FES):
@@ -868,8 +868,8 @@ def future_gas_p_nom(year, scenario, tech, FES):
 
     # print(generators.loc[generators['type'] == tech])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
@@ -976,8 +976,8 @@ def future_nuclear_p_nom(year, scenario, FES, networkmodel="Reduced"):
         generators_UC3 = generators_UC.copy()
         generators3 = generators.copy()
 
-    generators_UC3.to_csv("UC_data/generators.csv", header=True)
-    generators3.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC3.to_csv("data/UC_data/generators.csv", header=True)
+    generators3.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_oil_p_nom(year, scenario, FES):
@@ -1016,8 +1016,8 @@ def future_oil_p_nom(year, scenario, FES):
 
     # print(generators.loc[generators['carrier'] == tech])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_waste_p_nom(year, scenario, FES):
@@ -1064,8 +1064,8 @@ def future_waste_p_nom(year, scenario, FES):
     generators["type"] = generators["type"].replace({"EfW Incineration": "Waste"})
     generators_UC["type"] = generators_UC["type"].replace({"EfW Incineration": "Waste"})
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_gas_CCS(year, scenario, FES):
@@ -1121,8 +1121,8 @@ def future_gas_CCS(year, scenario, FES):
     # print(generators.loc[generators['carrier'] == tech])
     # print(generators.loc[generators['carrier'] == 'Natural Gas'])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_biomass_CCS(year, scenario, FES):
@@ -1175,8 +1175,8 @@ def future_biomass_CCS(year, scenario, FES):
     generators = pd.concat([generators, gen_tech2])
     generators_UC = pd.concat([generators_UC, gen_tech_UC2])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_hydrogen(year, scenario, FES):
@@ -1231,8 +1231,8 @@ def future_hydrogen(year, scenario, FES):
 
     generators_UC = pd.concat([generators_UC, gen_tech_UC2])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_capacity(year, tech, scenario, FES):
@@ -1886,8 +1886,8 @@ def write_generators_p_max_pu(
     # rename the columns with the cols list.
     df.columns = cols
 
-    df.to_csv("UC_data/generators-p_max_pu.csv", header=True)
-    df.to_csv("LOPF_data/generators-p_max_pu.csv", header=True)
+    df.to_csv("data/UC_data/generators-p_max_pu.csv", header=True)
+    df.to_csv("data/LOPF_data/generators-p_max_pu.csv", header=True)
     # this fixes the output from this
     # df.to_csv('UC_data/generators-p_min_pu.csv', header=True)
 
@@ -1938,8 +1938,8 @@ def future_p_nom(year, time_step, scenario, FES, networkmodel="Reduced"):
     df_UC = df_UC[~df_UC.type.str.contains("Anaerobic Digestion")]
 
     # save the dataframes to csv
-    df_UC.to_csv("UC_data/generators.csv", index=True, header=True)
-    df_LOPF.to_csv("LOPF_data/generators.csv", index=True, header=True)
+    df_UC.to_csv("data/UC_data/generators.csv", index=True, header=True)
+    df_LOPF.to_csv("data/LOPF_data/generators.csv", index=True, header=True)
 
     renewables.write_marine_generators(year, scenario, FES)
 
@@ -2006,8 +2006,8 @@ def unmet_load():
 
     df_LOPF.index.name = "name"
 
-    df_UC.to_csv("UC_data/generators.csv", header=True)
-    df_LOPF.to_csv("LOPF_data/generators.csv", header=True)
+    df_UC.to_csv("data/UC_data/generators.csv", header=True)
+    df_LOPF.to_csv("data/LOPF_data/generators.csv", header=True)
 
     # DEFINING A NEW FUNCTION TO AMEND 'WIND OFFSHORE' TO 'FLOATING WIND' AT SITES I, E, F, G, NE8, NE7, E3, E2, NE1, E1, NE2, NE3, NE6, N2, N3 - FOR LOPF ONLY
 
@@ -2108,15 +2108,15 @@ def merge_generation_buses(year):
     # add in new generators
     df_gen = pd.concat([df_gen, df_gen_res])
 
-    df_gen.to_csv("LOPF_data/generators.csv", header=True)
-    df_gen_p.to_csv("LOPF_data/generators-p_max_pu.csv", header=True)
+    df_gen.to_csv("data/LOPF_data/generators.csv", header=True)
+    df_gen_p.to_csv("data/LOPF_data/generators-p_max_pu.csv", header=True)
     if year < 2021:
         # fix interconnectors
         # inter_cols = [col for col in df_gen_p.columns if 'Interconnector' in col]
         # print(inter_cols)
         # df_interconnectors = df_gen_p[[inter_cols]]
         df_interconnectors = df_gen_p.filter(regex="Interconnector")
-        df_interconnectors.to_csv("LOPF_data/generators-p_min_pu.csv", header=True)
+        df_interconnectors.to_csv("data/LOPF_data/generators-p_min_pu.csv", header=True)
 
     if year >= 2021:
         # check if generators-p_min_pu exists and delete if so

@@ -115,7 +115,7 @@ def write_loads(year, networkmodel="Reduced"):
     # first off the loads is just at a single bus
     data = {"name": "load", "bus": "bus"}
     df = pd.DataFrame(data=data, index=[0])
-    df.to_csv("UC_data/loads.csv", index=False, header=True)
+    df.to_csv("data/UC_data/loads.csv", index=False, header=True)
 
     df_buses = pd.read_csv("data/LOPF_data/buses.csv")
     df_buses = df_buses.drop(columns=["v_nom", "carrier", "x", "y"])
@@ -137,7 +137,7 @@ def write_loads(year, networkmodel="Reduced"):
         except:
             pass
     # delete the IC loads
-    df_buses.to_csv("LOPF_data/loads.csv", index=True, header=True)
+    df_buses.to_csv("data/LOPF_data/loads.csv", index=True, header=True)
 
 
 def write_loads_p_set(
@@ -385,8 +385,8 @@ def write_loads_p_set(
     #     appendix.rename(index={appendix.index[0]: new_index}, inplace=True)
     #     df_loads_p_set_UC = df_loads_p_set_UC.append(appendix)
 
-    df_loads_p_set_LOPF.to_csv("LOPF_data/loads-p_set.csv", header=True)
-    df_loads_p_set_UC.to_csv("UC_data/loads-p_set.csv", header=True)
+    df_loads_p_set_LOPF.to_csv("data/LOPF_data/loads-p_set.csv", header=True)
+    df_loads_p_set_UC.to_csv("data/UC_data/loads-p_set.csv", header=True)
 
     return df_loads_p_set_LOPF
 

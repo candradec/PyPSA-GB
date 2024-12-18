@@ -838,10 +838,10 @@ class Distribution(object):
         self.storage_scale()
 
         # write generators file
-        self.df_generators.to_csv("LOPF_data/generators.csv", index=True, header=True)
+        self.df_generators.to_csv("data/LOPF_data/generators.csv", index=True, header=True)
 
         # write storage file
-        self.df_storage.to_csv("LOPF_data/storage_units.csv", index=True, header=True)
+        self.df_storage.to_csv("data/LOPF_data/storage_units.csv", index=True, header=True)
 
     def building_block_update(self):
 
@@ -851,9 +851,9 @@ class Distribution(object):
         # self.modify_interconnector()
 
         # write generators file
-        self.df_generators.to_csv("LOPF_data/generators.csv", index=True, header=True)
+        self.df_generators.to_csv("data/LOPF_data/generators.csv", index=True, header=True)
         # write storage file
-        self.df_storage.to_csv("LOPF_data/storage_units.csv", index=True, header=True)
+        self.df_storage.to_csv("data/LOPF_data/storage_units.csv", index=True, header=True)
         # write interconnector file
         # self.df_interconnector.to_csv('LOPF_data/links.csv', index=True, header=True)
 

@@ -369,8 +369,8 @@ def write_marginal_costs_series(start, end, freq, year, FES):
             df = df.iloc[::2, :]
             # df = df.append(appendix)
 
-    df.to_csv("UC_data/generators-marginal_cost.csv", header=True)
-    df.to_csv("LOPF_data/generators-marginal_cost.csv", header=True)
+    df.to_csv("data/UC_data/generators-marginal_cost.csv", header=True)
+    df.to_csv("data/LOPF_data/generators-marginal_cost.csv", header=True)
 
 
 if __name__ == "__main__":

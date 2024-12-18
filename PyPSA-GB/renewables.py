@@ -484,8 +484,8 @@ def scale_biomass_p_nom(year, scenario, FES):
 
     generators_UC = pd.concat([generators_UC, gen_tech_UC, biomass_CCS_UC])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def read_tidal_lagoon(year, scenario, fes):
@@ -775,7 +775,7 @@ def write_marine_generators(year, scenario, fes):
     # in shape to add to LOPF generators
     df_LOPF = pd.concat([df_LOPF, df_tidal_lagoon, df_tidal_stream, df_wave_power])
 
-    df_LOPF.to_csv("LOPF_data/generators.csv", header=True)
+    df_LOPF.to_csv("data/LOPF_data/generators.csv", header=True)
 
     # additional params for UC problem
     df_tidal_lagoon["committable"] = False
@@ -803,7 +803,7 @@ def write_marine_generators(year, scenario, fes):
     df_UC = pd.concat([df_UC, df_tidal_lagoon, df_tidal_stream, df_wave_power])
 
     df_UC.bus = "bus"
-    df_UC.to_csv("UC_data/generators.csv", header=True)
+    df_UC.to_csv("data/UC_data/generators.csv", header=True)
 
 
 def add_marine_timeseries(year, year_baseline, scenario, time_step):
@@ -989,8 +989,8 @@ def add_marine_timeseries(year, year_baseline, scenario, time_step):
     df_LOPF.columns = df_LOPF.columns.astype(str).str.replace("ì", "i")
     df_LOPF.columns = df_LOPF.columns.str.strip()
 
-    df_LOPF.to_csv("LOPF_data/generators-p_max_pu.csv", header=True)
-    df_LOPF.to_csv("UC_data/generators-p_max_pu.csv", header=True)
+    df_LOPF.to_csv("data/LOPF_data/generators-p_max_pu.csv", header=True)
+    df_LOPF.to_csv("data/UC_data/generators-p_max_pu.csv", header=True)
 
 
 def aggregate_renewable_generation(start, end, year, time_step):
@@ -1271,8 +1271,8 @@ def aggregate_renewable_generation(start, end, year, time_step):
     # print(df_res)
 
     # save the new generators and generators p max pu files
-    df_res.to_csv("UC_data/generators-p_max_pu.csv", header=True)
-    df.to_csv("UC_data/generators.csv", index=False, header=True)
+    df_res.to_csv("data/UC_data/generators-p_max_pu.csv", header=True)
+    df.to_csv("data/UC_data/generators.csv", index=False, header=True)
 
 
 def RES_correction_factors():
@@ -1506,8 +1506,8 @@ def future_RES_scale_p_nom(year, tech, scenario, FES):
         generators = pd.concat([generators, hydrogen])
         generators_UC = pd.concat([generators_UC, hydrogen_UC])
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
 
 def future_offshore_timeseries(year, year_baseline, scenario, FES):
@@ -1687,8 +1687,8 @@ def future_offshore_timeseries(year, year_baseline, scenario, FES):
 
     # print(gen_tech.p_nom.sum(), 'final sum')
 
-    generators_UC.to_csv("UC_data/generators.csv", header=True)
-    generators.to_csv("LOPF_data/generators.csv", header=True)
+    generators_UC.to_csv("data/UC_data/generators.csv", header=True)
+    generators.to_csv("data/LOPF_data/generators.csv", header=True)
 
     return_dict = {"timeseries": result, "norm": result_norm}
 

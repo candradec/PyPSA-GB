@@ -55,7 +55,7 @@ def write_interconnectors(start, end, freq):
     # append interconnectors as lines
     df_lines = pd.concat([df_lines, df_IC2], ignore_index=True, sort=False)
 
-    df_lines.to_csv("LOPF_data/lines.csv", header=True)
+    df_lines.to_csv("data/LOPF_data/lines.csv", header=True)
 
     # check if links.csv file exists, if it does then delete it
     filePath = "data/LOPF_data/links.csv"
@@ -76,7 +76,7 @@ def write_interconnectors(start, end, freq):
     IC_load = pd.DataFrame(name_dic)
     df_load = pd.concat([df_load, IC_load], ignore_index=True)
 
-    df_load.to_csv("UC_data/loads.csv", index=False, header=True)
+    df_load.to_csv("data/UC_data/loads.csv", index=False, header=True)
 
     # then add the interconnectors as named generators with basic attributes
     df_gen = pd.read_csv("data/UC_data/generators.csv", index_col=0, parse_dates=True)
@@ -102,7 +102,7 @@ def write_interconnectors(start, end, freq):
 
     # write the appended csv file
     result.index.name = "name"
-    result.to_csv("UC_data/generators.csv", header=True)
+    result.to_csv("data/UC_data/generators.csv", header=True)
 
     # for LOPF need to also provide bus
     IC_names_buses = dict(zip(df_IC.index, df_IC["bus1"].values))
@@ -123,7 +123,7 @@ def write_interconnectors(start, end, freq):
 
     # write the appended csv file
     result2.index.name = "name"
-    result2.to_csv("LOPF_data/generators.csv", header=True)
+    result2.to_csv("data/LOPF_data/generators.csv", header=True)
 
     # now add the flows as fixed generators and loads
     df_gen_series = pd.read_csv(
@@ -161,16 +161,16 @@ def write_interconnectors(start, end, freq):
 
     result = pd.concat([df_gen_series, df_IC_gen], axis=1)
     # # fix the interconnector flows by setting max and min
-    df_IC_gen.to_csv("UC_data/generators-p_min_pu.csv", header=True)
-    result.to_csv("UC_data/generators-p_max_pu.csv", header=True)
+    df_IC_gen.to_csv("data/UC_data/generators-p_min_pu.csv", header=True)
+    result.to_csv("data/UC_data/generators-p_max_pu.csv", header=True)
 
     # do similar for LOPF
     df_gen_series2 = pd.read_csv(
         "data/LOPF_data/generators-p_max_pu.csv", index_col=0, parse_dates=True
     )
     result = pd.concat([df_gen_series2, df_IC_gen], axis=1)
-    df_IC_gen.to_csv("LOPF_data/generators-p_min_pu.csv", header=True)
-    result.to_csv("LOPF_data/generators-p_max_pu.csv", header=True)
+    df_IC_gen.to_csv("data/LOPF_data/generators-p_min_pu.csv", header=True)
+    result.to_csv("data/LOPF_data/generators-p_max_pu.csv", header=True)
 
     # add the exports as loads
     df_load_series = pd.read_csv(
@@ -181,7 +181,7 @@ def write_interconnectors(start, end, freq):
 
     result1 = pd.concat([df_load_series, df_IC_load], axis=1)
 
-    result1.to_csv("UC_data/loads-p_set.csv", header=True)
+    result1.to_csv("data/UC_data/loads-p_set.csv", header=True)
 
     # do similar for LOPF
     df_load_series2 = pd.read_csv(
@@ -203,7 +203,7 @@ def write_interconnectors(start, end, freq):
 
     result1 = pd.concat([df_load_series2, df_IC_load], axis=1)
 
-    result1.to_csv("LOPF_data/loads-p_set.csv", header=True)
+    result1.to_csv("data/LOPF_data/loads-p_set.csv", header=True)
 
 
 def future_interconnectors(year, scenario, FES):
@@ -259,12 +259,12 @@ def future_interconnectors(year, scenario, FES):
             # gen_tech_UC.loc[g, 'p_nom'] *= scaling_factor
 
     # save csv for LOPF problem, but not UC which does not include lines??
-    df_IC.to_csv("LOPF_data/links.csv", index=True, header=True)
+    df_IC.to_csv("data/LOPF_data/links.csv", index=True, header=True)
 
     # try links with UC, but probably need to change buses
     df_IC_UC = df_IC.copy()
     df_IC_UC["bus1"] = "bus"
-    df_IC_UC.to_csv("UC_data/links.csv", index=True, header=True)
+    df_IC_UC.to_csv("data/UC_data/links.csv", index=True, header=True)
 
     # want to ensure that buses.csv has new buses from new interconnectors
     # get original bus file
@@ -281,7 +281,7 @@ def future_interconnectors(year, scenario, FES):
     # add buses to original buses file
     df_buses = pd.concat([df_buses, df_buses_to_add])
 
-    df_buses.to_csv("LOPF_data/buses.csv", index=True, header=True)
+    df_buses.to_csv("data/LOPF_data/buses.csv", index=True, header=True)
 
     # want to ensure that buses.csv has new buses from new interconnectors
     # get original bus file
@@ -297,7 +297,7 @@ def future_interconnectors(year, scenario, FES):
     # add buses to original buses file
     df_buses = pd.concat([df_buses, df_buses_to_add])
 
-    df_buses.to_csv("UC_data/buses.csv", index=True, header=True)
+    df_buses.to_csv("data/UC_data/buses.csv", index=True, header=True)
 
     # check if generators-p_min_pu exists and delete if so
     # used in historical simulations but not wanted in future sims
