@@ -65,15 +65,12 @@ def zone_interconnectors():
 
     if os.path.exists("../data/BusesBasedGBsystem/interconnectors/links.csv"):
         copy_buses_based()
-    pd_links = pd.read_csv(
-        "../data/BusesBasedGBsystem/interconnectors/links.csv")
-    pd_links["bus1"] = pd_links.apply(
-        lambda r: repalce_to_zone(r, pd_buses), axis=1)
+    pd_links = pd.read_csv("../data/BusesBasedGBsystem/interconnectors/links.csv")
+    pd_links["bus1"] = pd_links.apply(lambda r: repalce_to_zone(r, pd_buses), axis=1)
 
     if not os.path.exists("../data/ZonesBasedGBsystem/interconnectors/"):
         create_path()
-    pd_links.to_csv(
-        "../data/ZonesBasedGBsystem/interconnectors/links.csv", index=None)
+    pd_links.to_csv("../data/ZonesBasedGBsystem/interconnectors/links.csv", index=None)
 
     if os.path.exists("../data/BusesBasedGBsystem/interconnectors/links.csv"):
         copy_buses_based()
@@ -150,8 +147,7 @@ def zone_links():
             out["carrier"] = "DC"
         return pd.Series(out)
 
-    df_zonelinks[["bus0", "bus1", "carrier"]
-                 ] = df_zonelinks.apply(preprocess, axis=1)
+    df_zonelinks[["bus0", "bus1", "carrier"]] = df_zonelinks.apply(preprocess, axis=1)
     df_zonelinks = df_zonelinks[["name", "bus0", "bus1", "carrier", "p_nom"]]
 
     df_zonelinks["marginal_cost"] = 0

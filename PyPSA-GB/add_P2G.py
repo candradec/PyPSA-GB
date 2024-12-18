@@ -21,8 +21,7 @@ def gsp_to_bus(row, df_gsp_data):
         output["bus"] = bus
     else:
         try:
-            output["bus"] = df_gsp_data[df_gsp_data.index.str.contains(
-                gsp)].Bus
+            output["bus"] = df_gsp_data[df_gsp_data.index.str.contains(gsp)].Bus
         except:
             print(gsp)
             output["bus"] = np.nan
@@ -78,17 +77,14 @@ def add_P2G(year, scenario=None):
     ] + ["Z" + str(_) for _ in range(7, 18)]
 
     pd_generators = pd.read_csv(path + "generators.csv", index_col=0)
-    pd_generators_p_max_pu = pd.read_csv(
-        path + "generators-p_max_pu.csv", index_col=0)
+    pd_generators_p_max_pu = pd.read_csv(path + "generators-p_max_pu.csv", index_col=0)
     carrier_list = (
-        pd_generators[pd_generators.index.isin(
-            pd_generators_p_max_pu.columns.tolist())]
+        pd_generators[pd_generators.index.isin(pd_generators_p_max_pu.columns.tolist())]
         .carrier.drop_duplicates()
         .tolist()
     )
     pd_generators.loc[
-        pd_generators.index[pd_generators.carrier.isin(
-            carrier_list)], "marginal_cost"
+        pd_generators.index[pd_generators.carrier.isin(carrier_list)], "marginal_cost"
     ] = -1  # fixed marginal cost
 
     pd_generators.to_csv(path + "generators.csv")
@@ -97,8 +93,7 @@ def add_P2G(year, scenario=None):
         "../data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
     )
     df_gsp_data = df_gsp_data[["Latitude", "Longitude"]]
-    df_gsp_data.rename(
-        columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
+    df_gsp_data.rename(columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
     df_gsp_data["Bus"] = dc.map_to_bus(df_gsp_data)
 
     df_FES_bb = pd.read_excel(
@@ -115,12 +110,10 @@ def add_P2G(year, scenario=None):
 
     p_available = pd_generators_p_max_pu.multiply(
         pd_generators.loc[
-            pd_generators.index[pd_generators.carrier.isin(
-                carrier_list)], "p_nom"
+            pd_generators.index[pd_generators.carrier.isin(carrier_list)], "p_nom"
         ]
     )
-    p_available_by_bus = p_available.groupby(
-        pd_generators.bus, axis=1).sum().sum()
+    p_available_by_bus = p_available.groupby(pd_generators.bus, axis=1).sum().sum()
 
     if scenario == "Falling Short" or scenario == "Consumer Transformation":
         P2G_nom_scotland = (

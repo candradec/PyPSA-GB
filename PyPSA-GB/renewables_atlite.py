@@ -81,8 +81,7 @@ def offshore_wind_farm_timeseries(sites, year, name):
     ).coords
     sites["x"] = nearest.get("x").values
     sites["y"] = nearest.get("y").values
-    cells_generation = sites.merge(
-        cells, how="inner").rename(pd.Series(sites.index))
+    cells_generation = sites.merge(cells, how="inner").rename(pd.Series(sites.index))
 
     layout = cutout.layout_from_capacity_list(sites, col="capacity")
 
@@ -154,8 +153,7 @@ def onshore_wind_farm_timeseries(sites, year, name):
     ).coords
     sites["x"] = nearest.get("x").values
     sites["y"] = nearest.get("y").values
-    cells_generation = sites.merge(
-        cells, how="inner").rename(pd.Series(sites.index))
+    cells_generation = sites.merge(cells, how="inner").rename(pd.Series(sites.index))
 
     layout = cutout.layout_from_capacity_list(sites, col="capacity")
 
@@ -328,8 +326,7 @@ def offshore_wind_pipeline_timeseries(sites, year):
     path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_pipeline/"
 
     df.index.name = "name"
-    df.to_csv(path + "wind_offshore_pipeline" +
-              "_" + str(year) + ".csv", header=True)
+    df.to_csv(path + "wind_offshore_pipeline" + "_" + str(year) + ".csv", header=True)
 
 
 def offshore_wind_future_timeseries(sites, year):
@@ -342,8 +339,7 @@ def offshore_wind_future_timeseries(sites, year):
     path = "../data/renewables/atlite/outputs/Wind_Offshore/wind_offshore_future/"
 
     df.index.name = "name"
-    df.to_csv(path + "wind_offshore_future" +
-              "_" + str(year) + ".csv", header=True)
+    df.to_csv(path + "wind_offshore_future" + "_" + str(year) + ".csv", header=True)
 
 
 def offshore_wind_floating_timeseries(sites, year):
@@ -357,8 +353,7 @@ def offshore_wind_floating_timeseries(sites, year):
 
     df.index.name = "name"
     print(df)
-    df.to_csv(path + "wind_offshore_floating" +
-              "_" + str(year) + ".csv", header=True)
+    df.to_csv(path + "wind_offshore_floating" + "_" + str(year) + ".csv", header=True)
 
 
 def offshore_pipeline_sites():
@@ -549,8 +544,7 @@ def plot_UK_and_data():
     )
     UK.plot(ax=ax, zorder=1, transform=plate())
     cells.plot(ax=ax, **plot_grid_dict)
-    country_bound.plot(ax=ax, edgecolor="orange",
-                       facecolor="None", transform=plate())
+    country_bound.plot(ax=ax, edgecolor="orange", facecolor="None", transform=plate())
     ax.outline_patch.set_edgecolor("white")
 
     ax1 = fig.add_subplot(gs[0, 2])
@@ -572,8 +566,7 @@ def plot_UK_and_data():
 
     cap_factors = cutout.wind(turbine="Vestas_V112_3MW", capacity_factor=True)
 
-    fig, ax = plt.subplots(
-        subplot_kw={"projection": projection}, figsize=(9, 7))
+    fig, ax = plt.subplots(subplot_kw={"projection": projection}, figsize=(9, 7))
     cap_factors.name = "Capacity Factor"
     cap_factors.plot(ax=ax, transform=plate(), alpha=0.8)
     cells.plot(ax=ax, **plot_grid_dict)
@@ -600,16 +593,14 @@ def plot_UK_and_data():
     ).coords
     sites["x"] = nearest.get("x").values
     sites["y"] = nearest.get("y").values
-    cells_generation = sites.merge(
-        cells, how="inner").rename(pd.Series(sites.index))
+    cells_generation = sites.merge(cells, how="inner").rename(pd.Series(sites.index))
 
     layout = cutout.layout_from_capacity_list(sites, col="capacity")
 
     # layout = xr.DataArray(cells_generation.set_index(['y', 'x']).capacity.unstack())\
     #                     .reindex_like(cap_factors).rename('Installed Capacity [MW]')
 
-    fig, ax = plt.subplots(
-        subplot_kw={"projection": projection}, figsize=(9, 7))
+    fig, ax = plt.subplots(subplot_kw={"projection": projection}, figsize=(9, 7))
 
     UK.plot(ax=ax, zorder=1, transform=plate(), alpha=0.3)
     cells.plot(ax=ax, **plot_grid_dict)

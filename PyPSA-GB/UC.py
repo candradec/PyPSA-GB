@@ -69,8 +69,7 @@ elif marginal_price is True:
     # import back to pypsa datastructures
     pypsa.opf.extract_optimisation_results(network, network.snapshots)
 
-p_by_carrier = network.generators_t.p.groupby(
-    network.generators.carrier, axis=1).sum()
+p_by_carrier = network.generators_t.p.groupby(network.generators.carrier, axis=1).sum()
 
 storage_by_carrier = network.storage_units_t.p.groupby(
     network.storage_units.carrier, axis=1
@@ -117,8 +116,7 @@ p_by_carrier["Biomass"] = (
 
 # rename the hydro and interconnector import
 p_by_carrier = p_by_carrier.rename(columns={"Large Hydro": "Hydro"})
-p_by_carrier = p_by_carrier.rename(
-    columns={"Interconnector": "Interconnectors Import"})
+p_by_carrier = p_by_carrier.rename(columns={"Interconnector": "Interconnectors Import"})
 
 print(p_by_carrier)
 # print(p_by_carrier.columns)
@@ -232,8 +230,7 @@ ax.set_ylim(
 
 # Shrink current axis's height by 10% on the bottom
 box = ax.get_position()
-ax.set_position([box.x0, box.y0 + box.height *
-                0.1, box.width, box.height * 0.9])
+ax.set_position([box.x0, box.y0 + box.height * 0.1, box.width, box.height * 0.9])
 
 # Put a legend below current axis
 ax.legend(
@@ -263,10 +260,8 @@ plt.show()
 carrier = "Wind Onshore"
 
 capacity = network.generators.groupby("carrier").sum().at[carrier, "p_nom"]
-p_available = network.generators_t.p_max_pu.multiply(
-    network.generators["p_nom"])
-p_available_by_carrier = p_available.groupby(
-    network.generators.carrier, axis=1).sum()
+p_available = network.generators_t.p_max_pu.multiply(network.generators["p_nom"])
+p_available_by_carrier = p_available.groupby(network.generators.carrier, axis=1).sum()
 p_curtailed_by_carrier = p_available_by_carrier - p_by_carrier
 p_df = pd.DataFrame(
     {

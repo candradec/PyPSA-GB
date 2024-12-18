@@ -240,25 +240,21 @@ class Distribution(object):
 
     def interconnector_capacities_scotland(self):
 
-        generation_caps = {
-            "Interconnector": self.scotland_total_tech("Interconnector")}
+        generation_caps = {"Interconnector": self.scotland_total_tech("Interconnector")}
         return generation_caps
 
     def interconnector_capacities_rgb(self):
 
-        generation_caps = {
-            "Interconnector": self.rgb_total_tech("Interconnector")}
+        generation_caps = {"Interconnector": self.rgb_total_tech("Interconnector")}
         return generation_caps
 
     def read_scotland_generators(self):
 
         buses_scotland = self.buses_scotland
         # select generators in the buses in Scotland
-        df_generators = self.df_generators[self.df_generators.bus.isin(
-            buses_scotland)]
+        df_generators = self.df_generators[self.df_generators.bus.isin(buses_scotland)]
         generators_p_nom = (
-            df_generators.p_nom.groupby(
-                df_generators.carrier).sum().sort_values()
+            df_generators.p_nom.groupby(df_generators.carrier).sum().sort_values()
         )
         try:
             generators_p_nom.drop("Unmet Load", inplace=True)
@@ -270,11 +266,9 @@ class Distribution(object):
     def read_rgb_generators(self):
 
         buses_rgb = self.buses_rgb  # select generators in the buses in Scotland
-        df_generators = self.df_generators[self.df_generators.bus.isin(
-            buses_rgb)]
+        df_generators = self.df_generators[self.df_generators.bus.isin(buses_rgb)]
         generators_p_nom = (
-            df_generators.p_nom.groupby(
-                df_generators.carrier).sum().sort_values()
+            df_generators.p_nom.groupby(df_generators.carrier).sum().sort_values()
         )
         try:
             generators_p_nom.drop("Unmet Load", inplace=True)
@@ -315,8 +309,7 @@ class Distribution(object):
         buses_scotland = self.buses_scotland
         # select storage in the buses in Scotland
         df_storage = self.df_storage[self.df_storage.bus.isin(buses_scotland)]
-        storage_p_nom = df_storage.p_nom.groupby(
-            df_storage.carrier).sum().sort_values()
+        storage_p_nom = df_storage.p_nom.groupby(df_storage.carrier).sum().sort_values()
         # storage_p_nom.drop(storage_p_nom[storage_p_nom < 50].index, inplace=True)
         return storage_p_nom
 
@@ -325,8 +318,7 @@ class Distribution(object):
         buses_rgb = self.buses_rgb
         # select storage in the buses in Scotland
         df_storage = self.df_storage[self.df_storage.bus.isin(buses_rgb)]
-        storage_p_nom = df_storage.p_nom.groupby(
-            df_storage.carrier).sum().sort_values()
+        storage_p_nom = df_storage.p_nom.groupby(df_storage.carrier).sum().sort_values()
         # storage_p_nom.drop(storage_p_nom[storage_p_nom < 50].index, inplace=True)
         return storage_p_nom
 
@@ -602,26 +594,22 @@ class Distribution(object):
 
         for bus in buses_scotland:
             self.df_storage.loc[
-                (self.df_storage.carrier == "Battery") & (
-                    self.df_storage.bus == bus),
+                (self.df_storage.carrier == "Battery") & (self.df_storage.bus == bus),
                 "p_nom",
             ] /= scaling_factor_batteries_scotland
             # self.df_storage.loc[(self.df_storage.carrier == 'Battery') & (self.df_storage.bus == bus), "max_hours"] /= scaling_factor_batteries_scotland
             self.df_storage.loc[
-                (self.df_storage.carrier == "Battery") & (
-                    self.df_storage.bus == bus),
+                (self.df_storage.carrier == "Battery") & (self.df_storage.bus == bus),
                 "state_of_charge_initial",
             ] /= scaling_factor_batteries_scotland
         for bus in buses_rgb:
             self.df_storage.loc[
-                (self.df_storage.carrier == "Battery") & (
-                    self.df_storage.bus == bus),
+                (self.df_storage.carrier == "Battery") & (self.df_storage.bus == bus),
                 "p_nom",
             ] /= scaling_factor_batteries_rgb
             # self.df_storage.loc[(self.df_storage.carrier == 'Battery') & (self.df_storage.bus == bus), "max_hours"] /= scaling_factor_batteries_rgb
             self.df_storage.loc[
-                (self.df_storage.carrier == "Battery") & (
-                    self.df_storage.bus == bus),
+                (self.df_storage.carrier == "Battery") & (self.df_storage.bus == bus),
                 "state_of_charge_initial",
             ] /= scaling_factor_batteries_rgb
 
@@ -714,8 +702,7 @@ class Distribution(object):
         scenario = self.scenario
         # get generators dataframe with p_noms to be scaled
         df = self.df_generators
-        df_PV = df.loc[df["carrier"] ==
-                       "Solar Photovoltaics"].reset_index(drop=True)
+        df_PV = df.loc[df["carrier"] == "Solar Photovoltaics"].reset_index(drop=True)
         PV_by_bus = df_PV.groupby("bus").sum()["p_nom"]
         PV_by_bus_norm = PV_by_bus / PV_by_bus.sum()
 
@@ -726,8 +713,7 @@ class Distribution(object):
         df_PV = df_PV.loc[:, ~df_PV.columns.str.contains("^Unnamed")]
         df_PV = df_PV.astype("float")
         # compare indexes
-        missing = list(set(df_PV.index.values) -
-                       set(PV_by_bus_norm.index.values))
+        missing = list(set(df_PV.index.values) - set(PV_by_bus_norm.index.values))
         # drop the missing one in future PV
         df_PV.drop(missing, inplace=True)
         # normalise dataseries
@@ -757,8 +743,7 @@ class Distribution(object):
 
         # get generators dataframe with p_noms to be scaled
         df = self.df_generators
-        df_wind = df.loc[df["carrier"] ==
-                         "Wind Onshore"].reset_index(drop=True)
+        df_wind = df.loc[df["carrier"] == "Wind Onshore"].reset_index(drop=True)
         wind_by_bus = df_wind.groupby("bus").sum()["p_nom"]
         wind_by_bus_norm = wind_by_bus / wind_by_bus.sum()
 
@@ -769,8 +754,7 @@ class Distribution(object):
         df_wind = df_wind.loc[:, ~df_wind.columns.str.contains("^Unnamed")]
         df_wind = df_wind.astype("float")
         # compare indexes
-        missing = list(set(df_wind.index.values) -
-                       set(wind_by_bus_norm.index.values))
+        missing = list(set(df_wind.index.values) - set(wind_by_bus_norm.index.values))
         # drop the missing one in future wind
         df_wind.drop(missing, inplace=True)
         # normalise dataseries
@@ -809,13 +793,11 @@ class Distribution(object):
         path = "../data/FES2021/Distributions/Storage Distribution " + scenario + ".csv"
         df_storage = pd.read_csv(path, index_col=0)
         df_storage = df_storage[df_storage.index.notnull()]
-        df_storage = df_storage.loc[:, ~
-                                    df_storage.columns.str.contains("^Unnamed")]
+        df_storage = df_storage.loc[:, ~df_storage.columns.str.contains("^Unnamed")]
         df_storage = df_storage.astype("float")
         # compare indexes
         missing = list(
-            set(df_storage.index.values) -
-            set(storage_by_bus_norm.index.values)
+            set(df_storage.index.values) - set(storage_by_bus_norm.index.values)
         )
         # drop the missing one in future storage
         df_storage.drop(missing, inplace=True)
@@ -840,8 +822,7 @@ class Distribution(object):
         scaling_factor = (storage_future / storage_original).fillna(0)
         # scale storage for each bus
         for bus in storage_future.index:
-            df_storage.loc[df_storage.bus == bus,
-                           "p_nom"] *= scaling_factor[bus]
+            df_storage.loc[df_storage.bus == bus, "p_nom"] *= scaling_factor[bus]
             df_storage.loc[
                 df_storage.bus == bus, "state_of_charge_initial"
             ] *= scaling_factor[bus]
@@ -857,12 +838,10 @@ class Distribution(object):
         self.storage_scale()
 
         # write generators file
-        self.df_generators.to_csv(
-            "LOPF_data/generators.csv", index=True, header=True)
+        self.df_generators.to_csv("LOPF_data/generators.csv", index=True, header=True)
 
         # write storage file
-        self.df_storage.to_csv(
-            "LOPF_data/storage_units.csv", index=True, header=True)
+        self.df_storage.to_csv("LOPF_data/storage_units.csv", index=True, header=True)
 
     def building_block_update(self):
 
@@ -872,11 +851,9 @@ class Distribution(object):
         # self.modify_interconnector()
 
         # write generators file
-        self.df_generators.to_csv(
-            "LOPF_data/generators.csv", index=True, header=True)
+        self.df_generators.to_csv("LOPF_data/generators.csv", index=True, header=True)
         # write storage file
-        self.df_storage.to_csv(
-            "LOPF_data/storage_units.csv", index=True, header=True)
+        self.df_storage.to_csv("LOPF_data/storage_units.csv", index=True, header=True)
         # write interconnector file
         # self.df_interconnector.to_csv('LOPF_data/links.csv', index=True, header=True)
 

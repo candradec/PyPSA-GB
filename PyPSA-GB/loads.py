@@ -212,8 +212,7 @@ def write_loads_p_set(
 
     dti = pd.date_range(start=start, end=end, freq=freq)
 
-    df_distribution = pd.read_csv(
-        "../data/demand/Demand_Distribution.csv", index_col=0)
+    df_distribution = pd.read_csv("../data/demand/Demand_Distribution.csv", index_col=0)
     df_distribution = df_distribution.loc[
         :, ~df_distribution.columns.str.contains("^Unnamed")
     ]
@@ -287,8 +286,7 @@ def write_loads_p_set(
         elif FES == None:
             raise Exception("Please choose a FES year.")
 
-        df_FES_demand = df_FES.loc[df_FES["Data item"]
-                                   == "GBFES System Demand: Total"]
+        df_FES_demand = df_FES.loc[df_FES["Data item"] == "GBFES System Demand: Total"]
         df_FES_demand = df_FES_demand.loc[df_FES_demand["Scenario"] == scenario]
         date = str(year) + "-01-01 00:00:00"
         df_FES_demand.columns = df_FES_demand.columns.astype(str)
@@ -333,8 +331,7 @@ def write_loads_p_set(
             if year % 4 != 0:
                 # remove 29th Feb
                 scaled_load = scaled_load[
-                    ~((scaled_load.index.month == 2)
-                      & (scaled_load.index.day == 29))
+                    ~((scaled_load.index.month == 2) & (scaled_load.index.day == 29))
                 ]
 
         if time_step == 0.5:
@@ -368,8 +365,7 @@ def write_loads_p_set(
         df_year_LOPF = pd.DataFrame()
         for j in norm.columns:
             df_year_LOPF[j] = df_year * scale_factor * norm[j].values
-        peak_bus_regional = read_regional_breakdown_load(
-            scenario, year, networkmodel)
+        peak_bus_regional = read_regional_breakdown_load(scenario, year, networkmodel)
         for bus in df_year_LOPF.columns:
             scaling_factor = peak_bus_regional[bus] / (df_year_LOPF[bus].max())
             df_loads_p_set_LOPF[bus] *= scaling_factor
@@ -433,8 +429,7 @@ def read_regional_breakdown_load(scenario, year, networkmodel):
         "../data/FES2022/GSP_data.csv", encoding="cp1252", index_col=3
     )
     df_gsp_data = df_gsp_data[["Latitude", "Longitude"]]
-    df_gsp_data.rename(
-        columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
+    df_gsp_data.rename(columns={"Latitude": "y", "Longitude": "x"}, inplace=True)
 
     if networkmodel == "Reduced":
         from distance_calculator import map_to_bus as map_to
@@ -451,8 +446,7 @@ def read_regional_breakdown_load(scenario, year, networkmodel):
     # list of buses
     peak_bus = {}
     for bus in df_regional["Bus"].unique():
-        peak_bus[bus] = df_regional.loc[df_regional["Bus"]
-                                        == bus]["P(Gross)"].sum()
+        peak_bus[bus] = df_regional.loc[df_regional["Bus"] == bus]["P(Gross)"].sum()
 
     return peak_bus
 
@@ -461,8 +455,7 @@ def distribution_zonal_loads():
     scenario = "Leading the Way"
     data = {}
     for year in range(2021, 2051, 1):
-        dic = read_regional_breakdown_load(
-            scenario, year, networkmodel="Zonal")
+        dic = read_regional_breakdown_load(scenario, year, networkmodel="Zonal")
         data[year] = pd.Series(data=dic.values(), index=dic.keys(), name=year)
     df = pd.DataFrame(data)
     df.to_csv("../data/demand/Demand_Distribution_Zonal.csv", header=True)

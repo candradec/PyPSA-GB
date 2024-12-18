@@ -155,8 +155,7 @@ def read_floating_wind(year, scenario):
         )
 
         # need to use lat and lon to figure out the nearest bus - then add column called bus
-        df = df_floating_wind_locations.rename(
-            columns={"lat": "y", "lon": "x"})
+        df = df_floating_wind_locations.rename(columns={"lat": "y", "lon": "x"})
         buses = dc.map_to_bus(df)
         df_floating_wind_locations["bus"] = buses
 
@@ -181,15 +180,13 @@ def rewrite_generators_for_marine(year, tech, scenario, networkmodel="Reduced"):
 
     # remove the Wave power and Tidal stream in the df_generators
     if tech == "Floating wind":
-        df_generators = df_generators[~df_generators.type.str.contains(
-            "Floating wind")]
+        df_generators = df_generators[~df_generators.type.str.contains("Floating wind")]
     elif tech == "Tidal stream":
         df_generators = df_generators[
             ~df_generators.carrier.str.contains("Tidal stream")
         ]
     elif tech == "Wave power":
-        df_generators = df_generators[~df_generators.carrier.str.contains(
-            "Wave power")]
+        df_generators = df_generators[~df_generators.carrier.str.contains("Wave power")]
 
     for generator in dic["locations"].index:
         # add wave generator to df_generators

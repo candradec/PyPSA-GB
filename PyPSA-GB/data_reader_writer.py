@@ -139,8 +139,7 @@ def data_writer(
         generators.write_generators_p_max_pu(
             start, end, freq, year, FES, year_baseline=year_baseline, scenario=scenario
         )
-        renewables.add_marine_timeseries(
-            year, year_baseline, scenario, time_step)
+        renewables.add_marine_timeseries(year, year_baseline, scenario, time_step)
         generators.unmet_load()
         # distribution.Distribution(year, scenario).update()
         if networkmodel == "Reduced":
@@ -205,8 +204,7 @@ if __name__ == "__main__":
         for demand_dataset in ["eload", "historical"]:
             for time_step in [1.0, 0.5]:
                 for year_baseline in [2012, 2013]:
-                    print("inputs:", scenario, demand_dataset,
-                          time_step, year_baseline)
+                    print("inputs:", scenario, demand_dataset, time_step, year_baseline)
                     data_writer(
                         start,
                         end,

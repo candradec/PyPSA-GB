@@ -131,8 +131,7 @@ def unify_snapshots(target, filenames, dir):
 
     """
 
-    target = pd.read_csv(os.path.join(dir, target),
-                         index_col=0, parse_dates=True).index
+    target = pd.read_csv(os.path.join(dir, target), index_col=0, parse_dates=True).index
     target_length = len(target)
 
     for file in filenames:
@@ -145,16 +144,14 @@ def unify_snapshots(target, filenames, dir):
 
 if __name__ == "__main__":
 
-    dummy_sn = pd.date_range("2020-01-01 00:00:00",
-                             "2020-01-01 03:00:00", freq="0.5H")
+    dummy_sn = pd.date_range("2020-01-01 00:00:00", "2020-01-01 03:00:00", freq="0.5H")
     path = "utils/dump/snapshots.csv"
     pd.DataFrame(index=dummy_sn).to_csv(path)
 
     print("at start")
     print(pd.read_csv(path, index_col=0, parse_dates=True).index)
 
-    sn = pd.date_range("2020-01-01 00:00:00",
-                       "2020-01-01 02:30:00", freq="0.5H")
+    sn = pd.date_range("2020-01-01 00:00:00", "2020-01-01 02:30:00", freq="0.5H")
 
     fix_snapshots(sn, snapshots_path=path)
 
